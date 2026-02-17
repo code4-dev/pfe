@@ -1,0 +1,105 @@
+<div class="followups-container" *ngIf="project; else noProject">
+  <div class="page-header">
+    <div class="breadcrumb">
+      <a routerLink="/projects" class="breadcrumb-link">Mes Projets</a>
+      <span class="breadcrumb-separator">›</span>
+      <span class="breadcrumb-current">{{ project.name }}</span>
+    </div>
+    <h2>Suivis du Projet</h2>
+    <a [routerLink]="['/projects', projectId, 'followups', 'new']" class="btn btn-primary">
+      + Nouveau Suivi
+    </a>
+  </div>
+
+  <!-- Project Info Card -->
+  <div class="project-info-card">
+    <div class="info-item">
+      <span class="label">Statut:</span>
+      <span [ngClass]="'status status-' + project.status">
+        {{ project.status }}
+      </span>
+    </div>
+    <div class="info-item">
+      <span class="label">Échéance:</span>
+      <span class="value">{{ project.dueDate | date:'dd/MM/yyyy' }}</span>
+    </div>
+    <div class="info-item">
+      <span class="label">Description:</span>
+      <span class="value">{{ project.description }}</span>
+    </div>
+  </div>
+
+  <!-- Followups List -->
+  <div class="followups-section">
+    <div *ngIf="followups.length > 0; else noFollowups">
+      <div class="followup-card" *ngFor="let followup of followups">
+        <div class="followup-header">
+          <h4>{{ followup.title }}</h4>
+          <div class="followup-meta">
+            <span class="date">{{ followup.updatedAt | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+        </div>
+
+        <div class="followup-content">
+          <p class="description">{{ followup.description }}</p>
+
+          <!-- Progress Bar -->
+          <div class="progress-section">
+            <label>Avancement: {{ followup.progress }}%</label>
+            <div class="progress-bar">
+              <div 
+                class="progress-fill" 
+                [ngClass]="getProgressColor(followup.progress)"
+                [style.width.%]="followup.progress">
+              </div>
+            </div>
+          </div>
+
+          <!-- Issues -->
+          <div class="info-box" *ngIf="followup.issues">
+            <h5>Problèmes Rencontrés</h5>
+            <p>{{ followup.issues }}</p>
+          </div>
+
+          <!-- Decisions -->
+          <div class="info-box" *ngIf="followup.decisions">
+            <h5>Décisions Prises</h5>
+            <p>{{ followup.decisions }}</p>
+          </div>
+        </div>
+
+        <div class="followup-footer">
+          <a 
+            [routerLink]="['/projects', projectId, 'followups', followup.id, 'edit']" 
+            class="btn btn-small btn-secondary">
+            Modifier
+          </a>
+          <button 
+            class="btn btn-small btn-danger"
+            (click)="deleteFollowup(followup.id)">
+            Supprimer
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noFollowups>
+      <div class="empty-state">
+        <div class="empty-icon">📝</div>
+        <h3>Aucun suivi pour ce projet</h3>
+        <p>Créez un suivi pour commencer à tracker l'avancement du projet</p>
+        <a [routerLink]="['/projects', projectId, 'followups', 'new']" class="btn btn-primary">
+          Créer le premier suivi
+        </a>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<ng-template #noProject>
+  <div class="error-container">
+    <h2>Projet non trouvé</h2>
+    <p>Le projet demandé n'existe pas.</p>
+    <a routerLink="/projects" class="btn btn-primary">Retour aux projets</a>
+  </div>
+</ng-template>

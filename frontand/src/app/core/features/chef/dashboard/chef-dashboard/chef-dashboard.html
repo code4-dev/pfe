@@ -1,0 +1,61 @@
+<div class="dashboard-container">
+  <h2>Dashboard - Vue d'ensemble</h2>
+  
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number">{{ stats.total }}</div>
+      <div class="stat-label">Projets Total</div>
+    </div>
+    <div class="stat-card stat-in-progress">
+      <div class="stat-number">{{ stats.enCours }}</div>
+      <div class="stat-label">En Cours</div>
+    </div>
+    <div class="stat-card stat-completed">
+      <div class="stat-number">{{ stats.termines }}</div>
+      <div class="stat-label">Terminés</div>
+    </div>
+    <div class="stat-card stat-planning">
+      <div class="stat-number">{{ stats.planification }}</div>
+      <div class="stat-label">Planification</div>
+    </div>
+  </div>
+
+  <!-- Recent Projects -->
+  <div class="recent-projects">
+    <div class="section-header">
+      <h3>Projets Récents</h3>
+      <a routerLink="/projects" class="view-all-link">Voir tous les projets →</a>
+    </div>
+
+    <div class="projects-list" *ngIf="recentProjects.length > 0; else noProjects">
+      <div class="project-item" *ngFor="let project of recentProjects">
+        <div class="project-info">
+          <h4>{{ project.name }}</h4>
+          <p class="project-description">{{ project.description }}</p>
+          <div class="project-footer">
+            <span [ngClass]="'status ' + getStatusClass(project.status)">
+              {{ getStatusLabel(project.status) }}
+            </span>
+            <span class="due-date">Échéance: {{ project.dueDate | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+        <div class="project-actions">
+          <a [routerLink]="['/projects', project.id, 'edit']" class="btn btn-secondary">
+            Modifier
+          </a>
+          <a [routerLink]="['/projects', project.id, 'followups']" class="btn btn-primary">
+            Suivis
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noProjects>
+      <div class="empty-state">
+        <p>Aucun projet trouvé</p>
+        <a routerLink="/projects" class="btn btn-primary">Créer un projet</a>
+      </div>
+    </ng-template>
+  </div>
+</div>

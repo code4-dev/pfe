@@ -1,0 +1,121 @@
+<div class="projects-container">
+  <div class="page-header">
+    <h2>Mes Projets</h2>
+    <a routerLink="/projects/new" class="btn btn-primary">+ Nouveau Projet</a>
+  </div>
+
+  <div class="filters-section">
+    <div class="search-box">
+      <input 
+        type="text" 
+        placeholder="Rechercher un projet..." 
+        class="search-input"
+        [value]="searchText()"
+        (input)="onSearchChange($event)">
+    </div>
+    
+    <div class="filter-buttons">
+      <button 
+        class="filter-btn" 
+        [class.active]="filterStatus() === 'all'" 
+        (click)="onFilterChange('all')">
+        Tous ({{ filteredProjects().length }})
+      </button>
+      <button 
+        class="filter-btn" 
+        [class.active]="filterStatus() === 'planification'"
+        (click)="onFilterChange('planification')">
+        Planification
+      </button>
+      <button 
+        class="filter-btn" 
+        [class.active]="filterStatus() === 'en-cours'"
+        (click)="onFilterChange('en-cours')">
+        En cours
+      </button>
+      <button 
+        class="filter-btn" 
+        [class.active]="filterStatus() === 'termine'"
+        (click)="onFilterChange('termine')">
+        Terminés
+      </button>
+      <button 
+        class="filter-btn" 
+        [class.active]="filterStatus() === 'suspendu'"
+        (click)="onFilterChange('suspendu')">
+        Suspendus
+      </button>
+    </div>
+  </div>
+
+  @if (filteredProjects().length > 0) {
+    <div class="projects-table-container">
+      <table class="projects-table">
+        <thead>
+          <tr>
+            <th>Nom du Projet</th>
+            <th>Description</th>
+            <th>Statut</th>
+            <th>Échéance</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (project of filteredProjects(); track project.id) {
+            <tr>
+              <td class="project-name">
+                <strong>{{ project.name }}</strong>
+              </td>
+              <td class="project-description">
+                {{ project.description }}
+              </td>
+              <td>
+                <span [class]="'status ' + getStatusClass(project.status)">
+                  {{ getStatusLabel(project.status) }}
+                </span>
+              </td>
+              <td>
+                {{ project.dueDate | date:'dd/MM/yyyy' }}
+              </td>
+              <td class="actions-cell">
+                <div class="action-buttons">
+                  <a [routerLink]="['/projects', project.id, 'followups']" 
+                     class="btn btn-small btn-info" 
+                     title="Voir les suivis">
+                     Suivis
+                  </a>
+                  <a [routerLink]="['/projects', project.id, 'edit']" 
+                     class="btn btn-small btn-secondary" 
+                     title="Modifier le projet">
+                     Modifier
+                  </a>
+                  <button 
+                    class="btn btn-small btn-danger" 
+                    (click)="deleteProject(project.id)"
+                    title="Supprimer le projet">
+                    Supprimer
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <div class="empty-state">
+      <div class="empty-icon">📋</div>
+      <h3>Aucun projet trouvé</h3>
+      
+      @if (filterStatus() !== 'all' || searchText()) {
+        <p>Essayez de modifier vos critères de recherche ou de réinitialiser les filtres.</p>
+        <button class="btn btn-secondary" (click)="onFilterChange('all'); searchText.set('')">
+          Effacer les filtres
+        </button>
+      } @else {
+        <p>Vous n'avez pas encore de projet enregistré dans le système.</p>
+        <a routerLink="/projects/new" class="btn btn-primary">Créer votre premier projet</a>
+      }
+    </div>
+  }
+</div>

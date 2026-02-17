@@ -1,0 +1,36 @@
+<nav class="navbar">
+  <div class="navbar-container">
+     <div class="nav-section-left">
+      <img src="https://imgs.search.brave.com/mKiqfWAdVolDsgzyxu5jN-Oo-Oi_s4jIu_5pMDUtHVM/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/dGhkLnRuL3dwLWNv/bnRlbnQvdXBsb2Fk/cy8yMDE3LzEwL2Nu/aS0zMDB4MTgwLmpw/Zw" alt="Logo Gauche" class="nav-logo">
+    </div>
+    
+    <div class="navbar-brand">
+      <h1>Gestion de Projets</h1>
+    </div>
+   
+    <div class="navbar-menu" *ngIf="auth.isLoggedIn()">
+      <ul class="nav-links">
+        <li>
+          <a 
+            routerLink="/dashboard" 
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}">
+            Dashboard
+          </a>
+        </li>
+        <li>
+          <a 
+            routerLink="/projects" 
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}">
+            Mes Projets
+          </a>
+        </li>
+      </ul>
+      <div class="navbar-user">
+        <span class="user-name">{{ auth.getCurrentUser()?.name }}</span>
+        <button class="logout-btn" (click)="logout()">Déconnexion</button>
+      </div>
+    </div>
+  </div>
+</nav>

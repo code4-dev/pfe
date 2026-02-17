@@ -1,0 +1,92 @@
+<div class="login-container">
+  <div class="login-card">
+    <h1>Gestion de Projets</h1>
+    <h2>Creer un compte</h2>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="error-message" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <div class="form-group">
+        <label for="fullName">Nom complet</label>
+        <input type="text" id="fullName" formControlName="fullName" placeholder="Votre nom complet" class="form-input" required>
+        @if (submitted && f['fullName'].invalid) {
+          <div class="error-message">{{ getErrorMessage('fullName') }}</div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="numero">Numero de telephone</label>
+        <input type="text" id="numero" formControlName="numero" placeholder="Votre numero de telephone" class="form-input" required>
+        @if (submitted && f['numero'].invalid) {
+          <div class="error-message">{{ getErrorMessage('numero') }}</div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" formControlName="email" placeholder="votre.email@example.com" class="form-input" required>
+        @if (submitted && f['email'].invalid) {
+          <div class="error-message">{{ getErrorMessage('email') }}</div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe securise</label>
+        <div class="password-input-wrapper">
+          <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" placeholder="Creez un mot de passe fort" class="form-input" required>
+          <button type="button" class="password-toggle-btn" (click)="togglePassword()">
+            {{ showPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+
+        @if (f['password'].value) {
+          <div class="password-strength-bar" style="margin-top: 12px;">
+            <div class="password-strength-fill" [style.width.%]="(passwordStrength) * 16.666" [style.background-color]="passwordStrengthColor"></div>
+          </div>
+          <div class="password-strength-label" [style.color]="passwordStrengthColor">
+            Force: {{ passwordStrengthLabel }}
+          </div>
+        }
+      </div>
+
+      <div class="form-group mt-3">
+        <label for="confirmPassword">Confirmer le mot de passe</label>
+        <div class="password-input-wrapper">
+          <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirmPassword" formControlName="confirmPassword" placeholder="Confirmez votre mot de passe" class="form-input" required>
+          <button type="button" class="password-toggle-btn" (click)="toggleConfirmPassword()">
+            {{ showConfirmPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+
+        @if (f['confirmPassword'].value) {
+          <div [ngClass]="{'password-match': true, 'match': f['password'].value === f['confirmPassword'].value, 'mismatch': f['password'].value !== f['confirmPassword'].value}" class="mt-2">
+            <span>{{ f['password'].value === f['confirmPassword'].value ? 'Mots de passe identiques' : 'Les mots de passe ne correspondent pas' }}</span>
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="role">Role</label>
+        <select id="role" formControlName="role" class="form-select" required [ngClass]="{'is-invalid': submitted && f['role'].invalid}">
+          <option value="" disabled>Selectionnez votre role</option>
+          <option value="chef">Chef de projet</option>
+          <option value="pilote">Pilote qualite</option>
+          <option value="admin">Administrateur</option>
+        </select>
+        @if (submitted && f['role'].invalid) {
+          <div class="invalid-feedback">Veuillez selectionner un role.</div>
+        }
+      </div>
+
+      <button type="submit" class="btn btn-primary mt-4" [disabled]="loading">
+        {{ loading ? 'Creation en cours...' : 'Creer un compte' }}
+      </button>
+
+      <div class="register-link text-center mt-3">
+        <p>Vous avez deja un compte ? <a routerLink="/login">Se connecter</a></p>
+      </div>
+    </form>
+  </div>
+</div>

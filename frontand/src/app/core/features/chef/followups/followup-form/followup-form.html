@@ -1,0 +1,110 @@
+<div class="form-container">
+  <div class="form-header">
+    <div>
+      <a [routerLink]="['/projects', projectId, 'followups']" class="back-link">
+        ← Retour aux suivis
+      </a>
+      <h2>{{ isEditing ? 'Modifier le Suivi' : 'Créer un Nouveau Suivi' }}</h2>
+      <p class="project-name">Projet: <strong>{{ projectName }}</strong></p>
+    </div>
+  </div>
+
+  <form [formGroup]="followupForm" (ngSubmit)="onSubmit()" class="followup-form">
+    <!-- Title -->
+    <div class="form-group">
+      <label for="title">Titre du Suivi *</label>
+      <input 
+        type="text" 
+        id="title" 
+        formControlName="title"
+        placeholder="Ex: Avancement du développement backend"
+        class="form-input"
+        [class.error]="submitted && f['title'].errors">
+      <div class="error-message" *ngIf="submitted && f['title'].errors">
+        <span *ngIf="f['title'].errors['required']">Le titre est requis</span>
+        <span *ngIf="f['title'].errors['minlength']">Le titre doit contenir au moins 5 caractères</span>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="form-group">
+      <label for="description">Description *</label>
+      <textarea 
+        id="description" 
+        formControlName="description"
+        placeholder="Décrivez l'avancement, les tâches complétées, les obstacles, etc..."
+        rows="5"
+        class="form-textarea"
+        [class.error]="submitted && f['description'].errors">
+      </textarea>
+      <div class="error-message" *ngIf="submitted && f['description'].errors">
+        <span *ngIf="f['description'].errors['required']">La description est requise</span>
+        <span *ngIf="f['description'].errors['minlength']">La description doit contenir au moins 20 caractères</span>
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div class="form-group">
+      <label for="progress">
+        Avancement (%) * 
+        <span class="progress-value">{{ f['progress'].value || 50 }}%</span>
+      </label>
+      <input 
+        type="range" 
+        id="progress" 
+        formControlName="progress"
+        min="0"
+        max="100"
+        step="5"
+        class="form-range">
+      <div class="progress-bar-display">
+        <div 
+          class="progress-fill" 
+          [style.width.%]="f['progress'].value || 50"
+          [ngClass]="{
+            'progress-high': (f['progress'].value || 50) >= 75,
+            'progress-medium': (f['progress'].value || 50) >= 50 && (f['progress'].value || 50) < 75,
+            'progress-low': (f['progress'].value || 50) < 50
+          }">
+        </div>
+      </div>
+      <div class="error-message" *ngIf="submitted && f['progress'].errors">
+        <span *ngIf="f['progress'].errors['required']">L'avancement est requis</span>
+      </div>
+    </div>
+
+    <!-- Issues -->
+    <div class="form-group">
+      <label for="issues">Problèmes Rencontrés</label>
+      <textarea 
+        id="issues" 
+        formControlName="issues"
+        placeholder="Décrivez les problèmes, blocages ou difficultés rencontrés..."
+        rows="4"
+        class="form-textarea">
+      </textarea>
+    </div>
+
+    <!-- Decisions -->
+    <div class="form-group">
+      <label for="decisions">Décisions Prises</label>
+      <textarea 
+        id="decisions" 
+        formControlName="decisions"
+        placeholder="Documentez les décisions prises pour résoudre les problèmes..."
+        rows="4"
+        class="form-textarea">
+      </textarea>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">
+        {{ isEditing ? 'Mettre à jour' : 'Créer' }}
+      </button>
+      <a [routerLink]="['/projects', projectId, 'followups']" class="btn btn-secondary">
+        Annuler
+      </a>
+    </div>
+  </form>
+</div>

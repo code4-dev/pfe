@@ -1,0 +1,80 @@
+<div class="form-container">
+  <div class="form-header">
+    <h2>{{ isEditing ? 'Modifier le Projet' : 'Créer un Nouveau Projet' }}</h2>
+    <a routerLink="/projects" class="close-link">← Retour aux projets</a>
+  </div>
+
+  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="project-form">
+    <!-- Project Name -->
+    <div class="form-group">
+      <label for="name">Nom du Projet *</label>
+      <input 
+        type="text" 
+        id="name" 
+        formControlName="name"
+        placeholder="Ex: Développement du site Web"
+        class="form-input"
+        [class.error]="submitted && f['name'].errors">
+      <div class="error-message" *ngIf="submitted && f['name'].errors">
+        <span *ngIf="f['name'].errors['required']">Le nom est requis</span>
+        <span *ngIf="f['name'].errors['minlength']">Le nom doit contenir au moins 3 caractères</span>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="form-group">
+      <label for="description">Description *</label>
+      <textarea 
+        id="description" 
+        formControlName="description"
+        placeholder="Décrivez le projet en détail..."
+        rows="4"
+        class="form-textarea"
+        [class.error]="submitted && f['description'].errors">
+      </textarea>
+      <div class="error-message" *ngIf="submitted && f['description'].errors">
+        <span *ngIf="f['description'].errors['required']">La description est requise</span>
+        <span *ngIf="f['description'].errors['minlength']">La description doit contenir au moins 10 caractères</span>
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div class="form-group">
+      <label for="status">Statut *</label>
+      <select 
+        id="status" 
+        formControlName="status"
+        class="form-select"
+        [class.error]="submitted && f['status'].errors">
+        <option *ngFor="let option of statusOptions" [value]="option.value">
+          {{ option.label }}
+        </option>
+      </select>
+      <div class="error-message" *ngIf="submitted && f['status'].errors">
+        <span *ngIf="f['status'].errors['required']">Le statut est requis</span>
+      </div>
+    </div>
+
+    <!-- Due Date -->
+    <div class="form-group">
+      <label for="dueDate">Date d'Échéance *</label>
+      <input 
+        type="date" 
+        id="dueDate" 
+        formControlName="dueDate"
+        class="form-input"
+        [class.error]="submitted && f['dueDate'].errors">
+      <div class="error-message" *ngIf="submitted && f['dueDate'].errors">
+        <span *ngIf="f['dueDate'].errors['required']">La date d'échéance est requise</span>
+      </div>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">
+        {{ isEditing ? 'Mettre à jour' : 'Créer' }}
+      </button>
+      <a routerLink="/projects" class="btn btn-secondary">Annuler</a>
+    </div>
+  </form>
+</div>

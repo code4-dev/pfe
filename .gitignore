@@ -7,9 +7,9 @@ back/live*.log
 back/.tools/
 
 # Frontend build artifacts
-frontand/app/dist/
-frontand/app/node_modules/
-frontand/app/.angular/
+frontand/dist/
+frontand/node_modules/
+frontand/.angular/
 
 # IDE/editor
 .idea/
