@@ -1,0 +1,20 @@
+# Backend build artifacts
+back/target/
+back/bin/
+back/live*.log
+
+# Local tools
+back/.tools/
+
+# Frontend build artifacts
+frontand/app/dist/
+frontand/app/node_modules/
+frontand/app/.angular/
+
+# IDE/editor
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
