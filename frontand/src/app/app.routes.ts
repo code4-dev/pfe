@@ -6,6 +6,10 @@ import { Projects } from './core/features/chef/projects/projects/projects';
 import { ProjectForm } from './core/features/chef/projects/project-form/project-form';
 import { Followups } from './core/features/chef/followups/followups/followups';
 import { FollowupForm } from './core/features/chef/followups/followup-form/followup-form';
+import { AdminUsers } from './core/features/admin/users/admin-users';
+import { AdminNomenclatures } from './core/features/admin/nomenclatures/admin-nomenclatures';
+import { authGuard } from './core/guards/auth.guard';
+import { adminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
   {
@@ -16,38 +20,55 @@ export const routes: Routes = [
     path: 'register',
     component: Register
   },
- {
+  {
     path: '',
-    redirectTo: 'login',  
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
     path: 'dashboard',
-    component: ChefDashboard
+    component: ChefDashboard,
+    canActivate: [authGuard]
   },
   {
     path: 'projects',
-    component: Projects
+    component: Projects,
+    canActivate: [authGuard]
   },
   {
     path: 'projects/new',
-    component: ProjectForm
+    component: ProjectForm,
+    canActivate: [authGuard]
   },
   {
     path: 'projects/:id/edit',
-    component: ProjectForm
+    component: ProjectForm,
+    canActivate: [authGuard]
   },
   {
     path: 'projects/:projectId/followups',
-    component: Followups
+    component: Followups,
+    canActivate: [authGuard]
   },
   {
     path: 'projects/:projectId/followups/new',
-    component: FollowupForm
+    component: FollowupForm,
+    canActivate: [authGuard]
   },
   {
     path: 'projects/:projectId/followups/:followupId/edit',
-    component: FollowupForm
+    component: FollowupForm,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'admin/users',
+    component: AdminUsers,
+    canActivate: [authGuard, adminGuard]
+  },
+  {
+    path: 'admin/nomenclatures',
+    component: AdminNomenclatures,
+    canActivate: [authGuard, adminGuard]
   },
   {
     path: '**',

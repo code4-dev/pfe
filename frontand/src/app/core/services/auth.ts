@@ -20,7 +20,6 @@ interface RegisterRequest {
   fullName: string;
   email: string;
   password: string;
-  role: 'chef' | 'admin' | 'pilote';
 }
 
 @Injectable({
@@ -91,5 +90,13 @@ export class Auth {
 
   getToken(): string | null {
     return localStorage.getItem('token');
+  }
+
+  hasRole(role: User['role']): boolean {
+    return this.currentUser()?.role === role;
+  }
+
+  getHomeRoute(): string {
+    return this.hasRole('admin') ? '/admin/users' : '/dashboard';
   }
 }

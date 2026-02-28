@@ -1,0 +1,118 @@
+<section class="admin-page">
+  <header class="page-header">
+    <h2>Administration des nomenclatures</h2>
+    <p>Gestion des categories et codes de reference.</p>
+  </header>
+
+  <div class="feedback error" *ngIf="error">{{ error }}</div>
+  <div class="feedback success" *ngIf="message">{{ message }}</div>
+
+  <article class="panel">
+    <h3>Filtrer</h3>
+    <div class="filter-bar">
+      <input
+        type="text"
+        name="filterCategory"
+        [(ngModel)]="filterCategory"
+        placeholder="Categorie (optionnel, ex: PROJECT_STATUS)">
+      <button type="button" (click)="loadNomenclatures()">Rechercher</button>
+    </div>
+  </article>
+
+  <article class="panel">
+    <h3>Creer une nomenclature</h3>
+    <form #createForm="ngForm" class="form-grid" (ngSubmit)="createNomenclature()">
+      <label>
+        Categorie
+        <input type="text" name="createCategory" [(ngModel)]="createModel.category" required>
+      </label>
+      <label>
+        Code
+        <input type="text" name="createCode" [(ngModel)]="createModel.code" required>
+      </label>
+      <label>
+        Libelle
+        <input type="text" name="createLabel" [(ngModel)]="createModel.label" required>
+      </label>
+      <label>
+        Description
+        <input type="text" name="createDescription" [(ngModel)]="createModel.description">
+      </label>
+      <label>
+        Ordre
+        <input type="number" min="0" name="createSortOrder" [(ngModel)]="createModel.sortOrder" required>
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" name="createActive" [(ngModel)]="createModel.active">
+        Active
+      </label>
+      <button type="submit" [disabled]="saving || createForm.invalid">Creer</button>
+    </form>
+  </article>
+
+  <article class="panel">
+    <h3>Liste des nomenclatures</h3>
+    <p *ngIf="loading">Chargement...</p>
+    <div class="table-wrapper" *ngIf="!loading">
+      <table>
+        <thead>
+          <tr>
+            <th>Categorie</th>
+            <th>Code</th>
+            <th>Libelle</th>
+            <th>Ordre</th>
+            <th>Active</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of nomenclatures; trackBy: trackByNomenclatureId">
+            <td>{{ item.category }}</td>
+            <td>{{ item.code }}</td>
+            <td>{{ item.label }}</td>
+            <td>{{ item.sortOrder }}</td>
+            <td>{{ item.active ? 'Oui' : 'Non' }}</td>
+            <td class="actions-cell">
+              <button type="button" (click)="startEdit(item)">Modifier</button>
+              <button type="button" class="danger" (click)="deleteNomenclature(item)">Supprimer</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </article>
+
+  <article class="panel" *ngIf="editNomenclatureId">
+    <h3>Modifier la nomenclature</h3>
+    <form #editForm="ngForm" class="form-grid" (ngSubmit)="saveEdit()">
+      <label>
+        Categorie
+        <input type="text" name="editCategory" [(ngModel)]="editModel.category" required>
+      </label>
+      <label>
+        Code
+        <input type="text" name="editCode" [(ngModel)]="editModel.code" required>
+      </label>
+      <label>
+        Libelle
+        <input type="text" name="editLabel" [(ngModel)]="editModel.label" required>
+      </label>
+      <label>
+        Description
+        <input type="text" name="editDescription" [(ngModel)]="editModel.description">
+      </label>
+      <label>
+        Ordre
+        <input type="number" min="0" name="editSortOrder" [(ngModel)]="editModel.sortOrder" required>
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" name="editActive" [(ngModel)]="editModel.active">
+        Active
+      </label>
+      <div class="form-actions">
+        <button type="submit" [disabled]="saving || editForm.invalid">Enregistrer</button>
+        <button type="button" class="secondary" (click)="cancelEdit()">Annuler</button>
+      </div>
+    </form>
+  </article>
+</section>

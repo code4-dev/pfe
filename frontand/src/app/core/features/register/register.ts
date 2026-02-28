@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../services/auth';
 
@@ -38,13 +39,17 @@ export class Register implements OnInit {
   };
 
   ngOnInit(): void {
+    if (this.auth.isLoggedIn()) {
+      this.router.navigate([this.auth.getHomeRoute()]);
+      return;
+    }
+
     this.registerForm = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(3)]],
       numero: ['', [Validators.required, Validators.pattern(/^[\+]?[0-9\s\-\(\)]{10,15}$/)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', Validators.required],
-      role: ['chef', Validators.required]
+      confirmPassword: ['', Validators.required]
     }, { validators: this.passwordMatchValidator });
 
     this.registerForm.get('password')?.valueChanges.subscribe(value => {
@@ -139,25 +144,40 @@ export class Register implements OnInit {
     const payload = {
       fullName: this.registerForm.value.fullName,
       email: this.registerForm.value.email,
-      password: this.registerForm.value.password,
-      role: this.registerForm.value.role
+      password: this.registerForm.value.password
     };
 
     this.auth.register(payload).subscribe({
       next: () => {
         this.loading = false;
-        this.router.navigate(['/dashboard']);
+        this.router.navigate([this.auth.getHomeRoute()]);
       },
-      error: (err) => {
+      error: (err: HttpErrorResponse) => {
         this.loading = false;
-        if (err?.status === 409) {
+        if (err.status === 0) {
+          this.error = 'Backend inaccessible (verifiez que le serveur tourne sur http://localhost:8080)';
+        } else if (err.status === 403) {
+          this.error = 'Acces refuse (403). Redemarrez le backend pour appliquer la configuration de securite.';
+        } else if (err.status === 409) {
           this.error = 'Cet email est deja utilise';
-        } else if (err?.status === 400) {
-          this.error = 'Donnees invalides';
+        } else if (err.status === 400) {
+          this.error = this.extractBackendMessage(err) ?? 'Donnees invalides';
+        } else if (err.status >= 500) {
+          this.error = this.extractBackendMessage(err) ?? 'Erreur serveur backend pendant la creation du compte';
         } else {
-          this.error = 'Echec de creation du compte';
+          this.error = this.extractBackendMessage(err) ?? 'Echec de creation du compte';
         }
       }
     });
+  }
+
+  private extractBackendMessage(err: HttpErrorResponse): string | null {
+    const payload = err.error as { message?: string } | string | null;
+    if (typeof payload === 'string') {
+      const cleaned = payload.trim();
+      return cleaned.length > 0 ? cleaned : null;
+    }
+    const message = payload?.message?.trim();
+    return message && message.length > 0 ? message : null;
   }
 }

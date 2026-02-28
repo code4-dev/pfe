@@ -12,18 +12,26 @@
       <ul class="nav-links">
         <li>
           <a 
-            routerLink="/dashboard" 
+            [routerLink]="isAdmin() ? '/admin/users' : '/dashboard'"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{exact: true}">
-            Dashboard
+            {{ isAdmin() ? 'Administration' : 'Dashboard' }}
           </a>
         </li>
-        <li>
+        <li *ngIf="!isAdmin()">
           <a 
             routerLink="/projects" 
             routerLinkActive="active"
             [routerLinkActiveOptions]="{exact: true}">
             Mes Projets
+          </a>
+        </li>
+        <li *ngIf="isAdmin()">
+          <a
+            routerLink="/admin/nomenclatures"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}">
+            Nomenclatures
           </a>
         </li>
       </ul>

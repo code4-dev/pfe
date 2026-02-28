@@ -23,8 +23,7 @@ public class AuthController {
   public record RegisterRequest(
     @NotBlank @Size(min = 3, max = 120) String fullName,
     @Email @NotBlank String email,
-    @NotBlank @Size(min = 8, max = 128) String password,
-    @NotBlank String role
+    @NotBlank @Size(min = 8, max = 128) String password
   ) {
   }
 

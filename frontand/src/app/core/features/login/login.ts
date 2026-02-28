@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../services/auth';
@@ -25,7 +26,7 @@ export class Login implements OnInit {
 
   ngOnInit(): void {
     if (this.auth.isLoggedIn()) {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate([this.auth.getHomeRoute()]);
     }
   }
 
@@ -46,11 +47,17 @@ export class Login implements OnInit {
     this.auth.login(this.email, this.password).subscribe({
       next: () => {
         this.loading = false;
-        this.router.navigate(['/dashboard']);
+        this.router.navigate([this.auth.getHomeRoute()]);
       },
-      error: () => {
+      error: (err: HttpErrorResponse) => {
         this.loading = false;
-        this.error = 'Email ou mot de passe invalide';
+        if (err.status === 0) {
+          this.error = 'Backend inaccessible (verifiez que le serveur tourne sur http://localhost:8080)';
+        } else if (err.status === 403) {
+          this.error = 'Acces refuse (403). Redemarrez le backend pour appliquer la configuration de securite.';
+        } else {
+          this.error = 'Email ou mot de passe invalide';
+        }
       }
     });
   }

@@ -1,0 +1,103 @@
+<section class="admin-page">
+  <header class="page-header">
+    <h2>Administration des utilisateurs</h2>
+    <p>Creation, modification, suppression et attribution des roles.</p>
+  </header>
+
+  <div class="feedback error" *ngIf="error">{{ error }}</div>
+  <div class="feedback success" *ngIf="message">{{ message }}</div>
+
+  <article class="panel">
+    <h3>Creer un utilisateur</h3>
+    <form #createForm="ngForm" class="form-grid" (ngSubmit)="createUser()">
+      <label>
+        Nom
+        <input type="text" name="createName" [(ngModel)]="createModel.name" required minlength="3">
+      </label>
+      <label>
+        Email
+        <input type="email" name="createEmail" [(ngModel)]="createModel.email" required>
+      </label>
+      <label>
+        Mot de passe
+        <input type="password" name="createPassword" [(ngModel)]="createModel.password" required minlength="8">
+      </label>
+      <label>
+        Role
+        <select name="createRole" [(ngModel)]="createModel.role" required>
+          <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
+        </select>
+      </label>
+      <button type="submit" [disabled]="saving || createForm.invalid">Creer</button>
+    </form>
+  </article>
+
+  <article class="panel">
+    <h3>Liste des utilisateurs</h3>
+    <p *ngIf="loading">Chargement...</p>
+    <div class="table-wrapper" *ngIf="!loading">
+      <table>
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Role actuel</th>
+            <th>Attribuer role</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users; trackBy: trackByUserId">
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td><span class="pill">{{ user.role }}</span></td>
+            <td class="role-cell">
+              <select [name]="'role-' + user.id" [(ngModel)]="roleDrafts[user.id]">
+                <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
+              </select>
+              <button type="button" [disabled]="!canApplyRole(user)" (click)="applyRole(user)">Appliquer</button>
+            </td>
+            <td class="actions-cell">
+              <button type="button" [disabled]="processingUserId === user.id" (click)="startEdit(user)">Modifier</button>
+              <button
+                type="button"
+                class="danger"
+                [disabled]="isCurrentUser(user.id) || processingUserId === user.id"
+                (click)="deleteUser(user)">
+                Supprimer
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </article>
+
+  <article class="panel" *ngIf="editUserId">
+    <h3>Modifier l'utilisateur</h3>
+    <form #editForm="ngForm" class="form-grid" (ngSubmit)="saveEdit()">
+      <label>
+        Nom
+        <input type="text" name="editName" [(ngModel)]="editModel.name" required minlength="3">
+      </label>
+      <label>
+        Email
+        <input type="email" name="editEmail" [(ngModel)]="editModel.email" required>
+      </label>
+      <label>
+        Nouveau mot de passe (optionnel)
+        <input type="password" name="editPassword" [(ngModel)]="editModel.password" minlength="8">
+      </label>
+      <label>
+        Role
+        <select name="editRole" [(ngModel)]="editModel.role" required>
+          <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
+        </select>
+      </label>
+      <div class="form-actions">
+        <button type="submit" [disabled]="saving || editForm.invalid">Enregistrer</button>
+        <button type="button" class="secondary" (click)="cancelEdit()">Annuler</button>
+      </div>
+    </form>
+  </article>
+</section>

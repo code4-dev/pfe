@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Auth } from '../../../core/services/auth';
 
 @Component({
@@ -10,9 +10,17 @@ import { Auth } from '../../../core/services/auth';
   styleUrl: './navbar.css',
 })
 export class Navbar {
-  constructor(public auth: Auth) {}
+  constructor(
+    public auth: Auth,
+    private router: Router
+  ) {}
 
   logout(): void {
     this.auth.logout();
+    this.router.navigate(['/login']);
+  }
+
+  isAdmin(): boolean {
+    return this.auth.hasRole('admin');
   }
 }
