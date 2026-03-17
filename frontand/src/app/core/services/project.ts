@@ -6,10 +6,61 @@ export interface Project {
   id: string;
   name: string;
   description: string;
+  clientName?: string;
+  contractReference?: string;
+  projectContext?: string;
+  projectCharacter?: string;
+  projectType?: string;
+  developmentMode?: string;
+  historical?: string;
+  perimeter?: string;
+  projectOwner?: string;
+  projectLead?: string;
+  projectTeam?: string;
+  estimatedChargeHm?: number;
+  estimatedBudgetMd?: number;
+  estimatedDelayMonths?: number;
+  budgetChargeCp?: number;
+  budgetChargeId?: number;
+  budgetChargeTotal?: number;
+  budgetMdCp?: number;
+  budgetMdId?: number;
+  budgetMdTotal?: number;
+  potentialRisks?: string;
+  prerequisites?: string;
   status: 'planification' | 'en-cours' | 'termine' | 'suspendu';
   dueDate: string;
   createdAt: string;
   chefId: string;
+}
+
+export interface ProjectPayload {
+  name: string;
+  description: string;
+  clientName: string;
+  contractReference?: string;
+  projectContext: string;
+  projectCharacter: string;
+  projectType: string;
+  developmentMode: string;
+  historical?: string;
+  perimeter: string;
+  projectOwner: string;
+  projectLead: string;
+  projectTeam: string;
+  estimatedChargeHm: number;
+  estimatedBudgetMd: number;
+  estimatedDelayMonths: number;
+  budgetChargeCp?: number;
+  budgetChargeId?: number;
+  budgetChargeTotal?: number;
+  budgetMdCp?: number;
+  budgetMdId?: number;
+  budgetMdTotal?: number;
+  potentialRisks: string;
+  prerequisites: string;
+  status: 'planification' | 'en-cours' | 'termine' | 'suspendu';
+  dueDate: string;
 }
 
 @Injectable({
@@ -40,13 +91,13 @@ export class ProjectService {
     return this.http.get<Project>(`${this.API_URL}/${id}`);
   }
 
-  createProject(project: Omit<Project, 'id' | 'createdAt'>): Observable<Project> {
+  createProject(project: ProjectPayload): Observable<Project> {
     return this.http.post<Project>(this.API_URL, project).pipe(
       tap(() => this.refreshProjects())
     );
   }
 
-  updateProject(id: string, updates: Partial<Project>): Observable<Project> {
+  updateProject(id: string, updates: Partial<ProjectPayload>): Observable<Project> {
     return this.http.put<Project>(`${this.API_URL}/${id}`, updates).pipe(
       tap(() => this.refreshProjects())
     );

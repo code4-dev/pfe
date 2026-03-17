@@ -53,8 +53,6 @@ export class Login implements OnInit {
         this.loading = false;
         if (err.status === 0) {
           this.error = 'Backend inaccessible (verifiez que le serveur tourne sur http://localhost:8080)';
-        } else if (err.status === 403) {
-          this.error = 'Acces refuse (403). Redemarrez le backend pour appliquer la configuration de securite.';
         } else {
           this.error = 'Email ou mot de passe invalide';
         }

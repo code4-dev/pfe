@@ -1,13 +1,18 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 import { Navbar } from './shared/navbar/navbar/navbar';
+import { Sidebar } from './shared/sidebar/sidebar/sidebar';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar],
+  imports: [RouterOutlet, Navbar, Sidebar],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('app');
+  constructor(private router: Router) {}
+
+  hideShell(): boolean {
+    return this.router.url.startsWith('/login') || this.router.url.startsWith('/register');
+  }
 }

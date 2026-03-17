@@ -7,6 +7,8 @@ import { ProjectForm } from './core/features/chef/projects/project-form/project-
 import { Followups } from './core/features/chef/followups/followups/followups';
 import { FollowupForm } from './core/features/chef/followups/followup-form/followup-form';
 import { AdminUsers } from './core/features/admin/users/admin-users';
+import { AdminUserCreate } from './core/features/admin/users/admin-user-create/admin-user-create';
+import { AdminUserEdit } from './core/features/admin/users/admin-user-edit/admin-user-edit';
 import { AdminNomenclatures } from './core/features/admin/nomenclatures/admin-nomenclatures';
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
@@ -22,7 +24,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'dashboard',
     pathMatch: 'full'
   },
   {
@@ -32,6 +34,11 @@ export const routes: Routes = [
   },
   {
     path: 'projects',
+    component: Projects,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'suivi-projets',
     component: Projects,
     canActivate: [authGuard]
   },
@@ -59,6 +66,16 @@ export const routes: Routes = [
     path: 'projects/:projectId/followups/:followupId/edit',
     component: FollowupForm,
     canActivate: [authGuard]
+  },
+  {
+    path: 'admin/users/create',
+    component: AdminUserCreate,
+    canActivate: [authGuard, adminGuard]
+  },
+  {
+    path: 'admin/users/edit/:id',
+    component: AdminUserEdit,
+    canActivate: [authGuard, adminGuard]
   },
   {
     path: 'admin/users',

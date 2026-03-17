@@ -4,6 +4,7 @@ import com.pfe.backend.user.UserEntity;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,16 +30,60 @@ public class ProjectController {
   public record ProjectCreateRequest(
     @NotBlank @Size(min = 3) String name,
     @NotBlank @Size(min = 10) String description,
+    @NotBlank @Size(max = 150) String clientName,
+    @Size(max = 150) String contractReference,
+    @NotBlank @Size(max = 160) String projectContext,
+    @NotBlank @Size(max = 60) String projectCharacter,
+    @NotBlank @Size(max = 80) String projectType,
+    @NotBlank @Size(max = 60) String developmentMode,
+    String historical,
+    @NotBlank String perimeter,
+    @NotBlank @Size(max = 120) String projectOwner,
+    @NotBlank @Size(max = 120) String projectLead,
+    @NotBlank String projectTeam,
+    @NotNull @PositiveOrZero Integer estimatedChargeHm,
+    @NotNull @PositiveOrZero Double estimatedBudgetMd,
+    @NotNull @PositiveOrZero Integer estimatedDelayMonths,
+    @PositiveOrZero Integer budgetChargeCp,
+    @PositiveOrZero Integer budgetChargeId,
+    @PositiveOrZero Integer budgetChargeTotal,
+    @PositiveOrZero Double budgetMdCp,
+    @PositiveOrZero Double budgetMdId,
+    @PositiveOrZero Double budgetMdTotal,
+    @NotBlank String potentialRisks,
+    @NotBlank String prerequisites,
     @NotNull ProjectStatus status,
     @NotNull LocalDate dueDate
   ) {
   }
 
   public record ProjectUpdateRequest(
-    @Size(min = 3) String name,
-    @Size(min = 10) String description,
-    ProjectStatus status,
-    LocalDate dueDate
+    @NotBlank @Size(min = 3) String name,
+    @NotBlank @Size(min = 10) String description,
+    @NotBlank @Size(max = 150) String clientName,
+    @Size(max = 150) String contractReference,
+    @NotBlank @Size(max = 160) String projectContext,
+    @NotBlank @Size(max = 60) String projectCharacter,
+    @NotBlank @Size(max = 80) String projectType,
+    @NotBlank @Size(max = 60) String developmentMode,
+    String historical,
+    @NotBlank String perimeter,
+    @NotBlank @Size(max = 120) String projectOwner,
+    @NotBlank @Size(max = 120) String projectLead,
+    @NotBlank String projectTeam,
+    @NotNull @PositiveOrZero Integer estimatedChargeHm,
+    @NotNull @PositiveOrZero Double estimatedBudgetMd,
+    @NotNull @PositiveOrZero Integer estimatedDelayMonths,
+    @PositiveOrZero Integer budgetChargeCp,
+    @PositiveOrZero Integer budgetChargeId,
+    @PositiveOrZero Integer budgetChargeTotal,
+    @PositiveOrZero Double budgetMdCp,
+    @PositiveOrZero Double budgetMdId,
+    @PositiveOrZero Double budgetMdTotal,
+    @NotBlank String potentialRisks,
+    @NotBlank String prerequisites,
+    @NotNull ProjectStatus status,
+    @NotNull LocalDate dueDate
   ) {
   }
 
@@ -46,6 +91,28 @@ public class ProjectController {
     String id,
     String name,
     String description,
+    String clientName,
+    String contractReference,
+    String projectContext,
+    String projectCharacter,
+    String projectType,
+    String developmentMode,
+    String historical,
+    String perimeter,
+    String projectOwner,
+    String projectLead,
+    String projectTeam,
+    Integer estimatedChargeHm,
+    Double estimatedBudgetMd,
+    Integer estimatedDelayMonths,
+    Integer budgetChargeCp,
+    Integer budgetChargeId,
+    Integer budgetChargeTotal,
+    Double budgetMdCp,
+    Double budgetMdId,
+    Double budgetMdTotal,
+    String potentialRisks,
+    String prerequisites,
     ProjectStatus status,
     LocalDate dueDate,
     Instant createdAt,

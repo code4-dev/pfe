@@ -1,246 +1,174 @@
-.form-container {
-  max-width: 800px;
-  margin: 0 auto;
-  background: white;
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+﻿:host {
+  display: block;
 }
 
-.form-header {
-  margin-bottom: 30px;
-  border-bottom: 2px solid #ecf0f1;
-  padding-bottom: 20px;
+.page {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto 16px;
+  padding: 16px;
+  background: #fff;
+  color: #111;
+  border: 1px solid #d9d9d9;
+  box-sizing: border-box;
 }
 
-.back-link {
-  color: #3498db;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  transition: color 0.3s ease;
-  display: inline-block;
+.top-actions {
   margin-bottom: 10px;
 }
 
-.back-link:hover {
-  color: #2980b9;
-}
-
-.form-header h2 {
-  font-size: 24px;
-  color: #2c3e50;
-  margin: 10px 0;
-}
-
-.project-name {
-  font-size: 13px;
-  color: #7f8c8d;
-  margin: 5px 0 0 0;
-}
-
-.followup-form {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-}
-
-/* Form Group */
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.form-group label {
-  font-size: 14px;
+.back-link {
+  text-decoration: none;
+  color: #0b5da8;
   font-weight: 600;
-  color: #2c3e50;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
-.progress-value {
-  font-size: 13px;
-  font-weight: 700;
-  color: #3498db;
-  background: #ecf0f1;
-  padding: 2px 8px;
-  border-radius: 4px;
-}
-
-/* Inputs */
-.form-input,
-.form-textarea {
-  padding: 12px 16px;
-  border: 2px solid #ecf0f1;
-  border-radius: 6px;
-  font-size: 14px;
-  font-family: inherit;
-  transition: border-color 0.3s ease;
-}
-
-.form-input:focus,
-.form-textarea:focus {
-  outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-}
-
-.form-textarea {
-  resize: vertical;
-  min-height: 100px;
-}
-
-.form-input.error,
-.form-textarea.error {
-  border-color: #e74c3c;
-}
-
-/* Range Input */
-.form-range {
+table {
   width: 100%;
-  height: 8px;
-  border-radius: 5px;
-  background: #ecf0f1;
-  outline: none;
-  appearance: none;
+  border-collapse: collapse;
+  margin-bottom: 10px;
 }
 
-.form-range::-webkit-slider-thumb {
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #3498db;
-  cursor: pointer;
-  transition: background 0.3s ease;
+table,
+th,
+td {
+  border: 1px solid #4b4b4b;
 }
 
-.form-range::-webkit-slider-thumb:hover {
-  background: #2980b9;
+th,
+td {
+  padding: 8px;
+  vertical-align: middle;
 }
 
-.form-range::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #3498db;
-  cursor: pointer;
-  border: none;
-  transition: background 0.3s ease;
+input,
+textarea,
+select {
+  width: 100%;
+  border: 1px solid #a9a9a9;
+  padding: 6px;
+  box-sizing: border-box;
+  font-size: 13px;
+  font-family: inherit;
+  background: #fff;
 }
 
-.form-range::-moz-range-thumb:hover {
-  background: #2980b9;
+.header-table td {
+  border: 1px solid #4b4b4b;
 }
 
-/* Progress Bar Display */
-.progress-bar-display {
-  background-color: #ecf0f1;
-  height: 24px;
-  border-radius: 12px;
-  overflow: hidden;
+.logo-box {
+  width: 130px;
+  text-align: center;
+}
+
+.logo-box img {
+  max-width: 100px;
+  max-height: 70px;
+}
+
+.main-title {
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.2px;
+}
+
+.sub-title {
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.project-line {
   margin-top: 8px;
+  font-size: 13px;
+  text-align: center;
 }
 
-.progress-fill {
-  height: 100%;
+.section-title {
+  background: #e8edf2;
+  border: 1px solid #4b4b4b;
+  border-bottom: none;
+  font-weight: 700;
+  padding: 6px 8px;
+  margin-top: 10px;
+}
+
+.form-error {
+  border: 1px solid #b42318;
+  background: #fef3f2;
+  color: #b42318;
+  padding: 8px 10px;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.invalid-field {
+  border-color: #b42318 !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.actions-row {
+  margin-top: 14px;
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 8px;
-  color: white;
-  font-size: 11px;
-  font-weight: 600;
-  transition: width 0.3s ease;
-}
-
-.progress-fill.progress-high {
-  background: linear-gradient(90deg, #27ae60, #2ecc71);
-}
-
-.progress-fill.progress-medium {
-  background: linear-gradient(90deg, #f39c12, #e67e22);
-}
-
-.progress-fill.progress-low {
-  background: linear-gradient(90deg, #e74c3c, #c0392b);
-}
-
-/* Error Messages */
-.error-message {
-  font-size: 12px;
-  color: #e74c3c;
-  margin-top: 4px;
-}
-
-/* Form Actions */
-.form-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid #ecf0f1;
+  gap: 8px;
+  justify-content: center;
 }
 
 .btn {
-  padding: 12px 24px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
   border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 12px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  display: inline-block;
-  text-align: center;
-  flex: 1;
+  text-decoration: none;
+}
+
+.btn-success {
+  background: #1f8f3a;
 }
 
 .btn-primary {
-  background-color: #3498db;
-  color: white;
-}
-
-.btn-primary:hover {
-  background-color: #2980b9;
-}
-
-.btn-primary:disabled {
-  background-color: #bdc3c7;
-  cursor: not-allowed;
+  background: #0b5da8;
 }
 
 .btn-secondary {
-  background-color: #95a5a6;
-  color: white;
+  background: #6b7280;
 }
 
-.btn-secondary:hover {
-  background-color: #7f8c8d;
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .page {
+    border: none;
+    margin: 0;
+    padding: 0;
+    max-width: none;
+  }
 }
 
-@media (max-width: 768px) {
-  .form-container {
-    padding: 20px;
+@media (max-width: 900px) {
+  .page {
+    padding: 10px;
   }
 
-  .form-header {
-    padding-bottom: 15px;
+  .main-title {
+    font-size: 14px;
   }
 
-  .form-header h2 {
-    font-size: 20px;
+  .sub-title {
+    font-size: 13px;
   }
 
-  .form-actions {
+  .actions-row {
     flex-direction: column;
   }
-
-  .btn {
-    width: 100%;
-  }
 }
-

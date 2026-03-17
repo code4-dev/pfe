@@ -25,6 +25,50 @@ public class ProjectEntity {
 
   private String description;
 
+  private String clientName;
+
+  private String contractReference;
+
+  private String projectContext;
+
+  private String projectCharacter;
+
+  private String projectType;
+
+  private String developmentMode;
+
+  private String historical;
+
+  private String perimeter;
+
+  private String projectOwner;
+
+  private String projectLead;
+
+  private String projectTeam;
+
+  private Integer estimatedChargeHm;
+
+  private Double estimatedBudgetMd;
+
+  private Integer estimatedDelayMonths;
+
+  private Integer budgetChargeCp;
+
+  private Integer budgetChargeId;
+
+  private Integer budgetChargeTotal;
+
+  private Double budgetMdCp;
+
+  private Double budgetMdId;
+
+  private Double budgetMdTotal;
+
+  private String potentialRisks;
+
+  private String prerequisites;
+
   private ProjectStatus status;
 
   private LocalDate dueDate;

@@ -29,6 +29,28 @@ public class ProjectService {
     var project = ProjectEntity.builder()
       .name(req.name())
       .description(req.description())
+      .clientName(req.clientName())
+      .contractReference(req.contractReference())
+      .projectContext(req.projectContext())
+      .projectCharacter(req.projectCharacter())
+      .projectType(req.projectType())
+      .developmentMode(req.developmentMode())
+      .historical(req.historical())
+      .perimeter(req.perimeter())
+      .projectOwner(req.projectOwner())
+      .projectLead(req.projectLead())
+      .projectTeam(req.projectTeam())
+      .estimatedChargeHm(req.estimatedChargeHm())
+      .estimatedBudgetMd(req.estimatedBudgetMd())
+      .estimatedDelayMonths(req.estimatedDelayMonths())
+      .budgetChargeCp(req.budgetChargeCp())
+      .budgetChargeId(req.budgetChargeId())
+      .budgetChargeTotal(req.budgetChargeTotal())
+      .budgetMdCp(req.budgetMdCp())
+      .budgetMdId(req.budgetMdId())
+      .budgetMdTotal(req.budgetMdTotal())
+      .potentialRisks(req.potentialRisks())
+      .prerequisites(req.prerequisites())
       .status(req.status())
       .dueDate(req.dueDate())
       .createdAt(Instant.now())
@@ -46,6 +68,72 @@ public class ProjectService {
     }
     if (req.description() != null) {
       project.setDescription(req.description());
+    }
+    if (req.clientName() != null) {
+      project.setClientName(req.clientName());
+    }
+    if (req.contractReference() != null) {
+      project.setContractReference(req.contractReference());
+    }
+    if (req.projectContext() != null) {
+      project.setProjectContext(req.projectContext());
+    }
+    if (req.projectCharacter() != null) {
+      project.setProjectCharacter(req.projectCharacter());
+    }
+    if (req.projectType() != null) {
+      project.setProjectType(req.projectType());
+    }
+    if (req.developmentMode() != null) {
+      project.setDevelopmentMode(req.developmentMode());
+    }
+    if (req.historical() != null) {
+      project.setHistorical(req.historical());
+    }
+    if (req.perimeter() != null) {
+      project.setPerimeter(req.perimeter());
+    }
+    if (req.projectOwner() != null) {
+      project.setProjectOwner(req.projectOwner());
+    }
+    if (req.projectLead() != null) {
+      project.setProjectLead(req.projectLead());
+    }
+    if (req.projectTeam() != null) {
+      project.setProjectTeam(req.projectTeam());
+    }
+    if (req.estimatedChargeHm() != null) {
+      project.setEstimatedChargeHm(req.estimatedChargeHm());
+    }
+    if (req.estimatedBudgetMd() != null) {
+      project.setEstimatedBudgetMd(req.estimatedBudgetMd());
+    }
+    if (req.estimatedDelayMonths() != null) {
+      project.setEstimatedDelayMonths(req.estimatedDelayMonths());
+    }
+    if (req.budgetChargeCp() != null) {
+      project.setBudgetChargeCp(req.budgetChargeCp());
+    }
+    if (req.budgetChargeId() != null) {
+      project.setBudgetChargeId(req.budgetChargeId());
+    }
+    if (req.budgetChargeTotal() != null) {
+      project.setBudgetChargeTotal(req.budgetChargeTotal());
+    }
+    if (req.budgetMdCp() != null) {
+      project.setBudgetMdCp(req.budgetMdCp());
+    }
+    if (req.budgetMdId() != null) {
+      project.setBudgetMdId(req.budgetMdId());
+    }
+    if (req.budgetMdTotal() != null) {
+      project.setBudgetMdTotal(req.budgetMdTotal());
+    }
+    if (req.potentialRisks() != null) {
+      project.setPotentialRisks(req.potentialRisks());
+    }
+    if (req.prerequisites() != null) {
+      project.setPrerequisites(req.prerequisites());
     }
     if (req.status() != null) {
       project.setStatus(req.status());
@@ -77,6 +165,28 @@ public class ProjectService {
       project.getId(),
       project.getName(),
       project.getDescription(),
+      project.getClientName(),
+      project.getContractReference(),
+      project.getProjectContext(),
+      project.getProjectCharacter(),
+      project.getProjectType(),
+      project.getDevelopmentMode(),
+      project.getHistorical(),
+      project.getPerimeter(),
+      project.getProjectOwner(),
+      project.getProjectLead(),
+      project.getProjectTeam(),
+      project.getEstimatedChargeHm(),
+      project.getEstimatedBudgetMd(),
+      project.getEstimatedDelayMonths(),
+      project.getBudgetChargeCp(),
+      project.getBudgetChargeId(),
+      project.getBudgetChargeTotal(),
+      project.getBudgetMdCp(),
+      project.getBudgetMdId(),
+      project.getBudgetMdTotal(),
+      project.getPotentialRisks(),
+      project.getPrerequisites(),
       project.getStatus(),
       project.getDueDate(),
       project.getCreatedAt(),

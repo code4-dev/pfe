@@ -1,110 +1,170 @@
-<div class="form-container">
-  <div class="form-header">
-    <div>
-      <a [routerLink]="['/projects', projectId, 'followups']" class="back-link">
-        ← Retour aux suivis
-      </a>
-      <h2>{{ isEditing ? 'Modifier le Suivi' : 'Créer un Nouveau Suivi' }}</h2>
-      <p class="project-name">Projet: <strong>{{ projectName }}</strong></p>
+﻿<form [formGroup]="followupForm" (ngSubmit)="onSubmit()">
+  <div class="page">
+    <div class="top-actions no-print">
+      <a [routerLink]="['/projects', projectId, 'followups']" class="back-link">Retour aux suivis</a>
+    </div>
+
+    <table class="header-table">
+      <tr>
+        <td class="logo-box">
+          <img src="https://thd.tn/wp-content/uploads/2017/10/cni.jpg" alt="Logo">
+        </td>
+        <td>
+          <div class="main-title">SYSTEME DE MANAGEMENT DE LA QUALITE</div>
+          <hr>
+          <div class="sub-title">Fiche Suivi Action de Maintenance </div>
+          <div class="project-line">Projet : <strong>{{ projectName }}</strong></div>
+        </td>
+      </tr>
+    </table>
+
+    <div class="form-error" *ngIf="submitted && followupForm.invalid">
+      Merci de remplir les champs obligatoires (*).
+    </div>
+
+    <div class="section-title">1. Signalement action de maintenance</div>
+    <table>
+      <tr>
+        <td><strong>Date :</strong></td>
+        <td><input type="date" formControlName="reportDate"></td>
+        <td><strong>Demandeur :</strong></td>
+        <td><input type="text" formControlName="requester"></td>
+      </tr>
+      <tr>
+        <td><strong>Reference contractuelle :</strong></td>
+        <td><input type="text" formControlName="contractReference"></td>
+        <td><strong>Objet demande * :</strong></td>
+        <td>
+          <select formControlName="requestType" [class.invalid-field]="submitted && f['requestType'].invalid">
+            <option *ngFor="let option of requestTypeOptions" [value]="option.value">{{ option.label }}</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Procedure concernee :</strong></td>
+        <td colspan="3"><input type="text" formControlName="procedureConcerned"></td>
+      </tr>
+      <tr>
+        <td><strong>Titre suivi * :</strong></td>
+        <td colspan="3"><input type="text" formControlName="title" [class.invalid-field]="submitted && f['title'].invalid"></td>
+      </tr>
+      <tr>
+        <td><strong>Description probleme * :</strong></td>
+        <td colspan="3"><textarea rows="4" formControlName="description" [class.invalid-field]="submitted && f['description'].invalid"></textarea></td>
+      </tr>
+      <tr>
+        <td><strong>Pieces jointes :</strong></td>
+        <td colspan="3"><textarea rows="2" formControlName="attachments"></textarea></td>
+      </tr>
+    </table>
+
+    <div class="section-title">2. Diagnostic</div>
+    <table>
+      <tr>
+        <td><strong>Faisabilite :</strong></td>
+        <td>
+          <select formControlName="feasibility">
+            <option value="oui">Oui</option>
+            <option value="non">Non</option>
+          </select>
+        </td>
+        <td><strong>Livrable :</strong></td>
+        <td>
+          <select formControlName="deliveryType">
+            <option value="version">Nouvelle version</option>
+            <option value="patch">Patch</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Estimation charge :</strong></td>
+        <td><input type="text" formControlName="estimatedCharge" placeholder="ex: 12 H/M"></td>
+        <td><strong>Estimation delai :</strong></td>
+        <td><input type="text" formControlName="estimatedDelay" placeholder="ex: 3 semaines"></td>
+      </tr>
+      <tr>
+        <td><strong>Commentaire diagnostic :</strong></td>
+        <td colspan="3"><textarea rows="3" formControlName="diagnosticComment"></textarea></td>
+      </tr>
+      <tr>
+        <td><strong>Problemes rencontres :</strong></td>
+        <td colspan="3"><textarea rows="3" formControlName="issues"></textarea></td>
+      </tr>
+    </table>
+
+    <div class="section-title">3. Decision RMAP</div>
+    <table>
+      <tr>
+        <td><strong>Decision :</strong></td>
+        <td>
+          <select formControlName="decisionRmap">
+            <option value="oui">Oui</option>
+            <option value="non">Non</option>
+          </select>
+        </td>
+        <td><strong>Date decision :</strong></td>
+        <td><input type="date" formControlName="decisionDate"></td>
+      </tr>
+      <tr>
+        <td><strong>Decisions prises :</strong></td>
+        <td colspan="3"><textarea rows="3" formControlName="decisions"></textarea></td>
+      </tr>
+    </table>
+
+    <div class="section-title">4. Demandes code/doc et environnements</div>
+    <table>
+      <tr>
+        <td><strong>Date demande code/doc :</strong></td>
+        <td><input type="date" formControlName="sourceRequestDate"></td>
+        <td><strong>Date reception code/doc :</strong></td>
+        <td><input type="date" formControlName="sourceReceptionDate"></td>
+      </tr>
+      <tr>
+        <td><strong>Demande env dev :</strong></td>
+        <td><input type="date" formControlName="devEnvRequestDate"></td>
+        <td><strong>Ouverture env dev :</strong></td>
+        <td><input type="date" formControlName="devEnvOpenDate"></td>
+      </tr>
+      <tr>
+        <td><strong>Demande env test :</strong></td>
+        <td><input type="date" formControlName="testEnvRequestDate"></td>
+        <td><strong>Ouverture env test :</strong></td>
+        <td><input type="date" formControlName="testEnvOpenDate"></td>
+      </tr>
+    </table>
+
+    <div class="section-title">5. Compte rendu maintenance</div>
+    <table>
+      <tr>
+        <td><strong>Compte rendu :</strong></td>
+        <td colspan="3"><textarea rows="3" formControlName="workSummary"></textarea></td>
+      </tr>
+      <tr>
+        <td><strong>Nouvelle version n° :</strong></td>
+        <td><input type="text" formControlName="versionNumber"></td>
+        <td><strong>Date fin travaux :</strong></td>
+        <td><input type="date" formControlName="workEndDate"></td>
+      </tr>
+    </table>
+
+    <div class="section-title">6. Cloture action</div>
+    <table>
+      <tr>
+        <td><strong>Date envoi package :</strong></td>
+        <td><input type="date" formControlName="packageSendDate"></td>
+        <td><strong>Avancement * :</strong></td>
+        <td><input type="number" min="0" max="100" step="5" formControlName="progress" [class.invalid-field]="submitted && f['progress'].invalid"></td>
+      </tr>
+      <tr>
+        <td><strong>Observation cloture :</strong></td>
+        <td colspan="3"><textarea rows="2" formControlName="closureObservation"></textarea></td>
+      </tr>
+    </table>
+
+    <div class="text-center no-print actions-row">
+      <button type="submit" class="btn btn-success">{{ isEditing ? 'Mettre a jour' : 'Enregistrer' }}</button>
+      <button type="button" (click)="printPage()" class="btn btn-primary">Imprimer / PDF</button>
+      <a [routerLink]="['/projects', projectId, 'followups']" class="btn btn-secondary">Annuler</a>
     </div>
   </div>
-
-  <form [formGroup]="followupForm" (ngSubmit)="onSubmit()" class="followup-form">
-    <!-- Title -->
-    <div class="form-group">
-      <label for="title">Titre du Suivi *</label>
-      <input 
-        type="text" 
-        id="title" 
-        formControlName="title"
-        placeholder="Ex: Avancement du développement backend"
-        class="form-input"
-        [class.error]="submitted && f['title'].errors">
-      <div class="error-message" *ngIf="submitted && f['title'].errors">
-        <span *ngIf="f['title'].errors['required']">Le titre est requis</span>
-        <span *ngIf="f['title'].errors['minlength']">Le titre doit contenir au moins 5 caractères</span>
-      </div>
-    </div>
-
-    <!-- Description -->
-    <div class="form-group">
-      <label for="description">Description *</label>
-      <textarea 
-        id="description" 
-        formControlName="description"
-        placeholder="Décrivez l'avancement, les tâches complétées, les obstacles, etc..."
-        rows="5"
-        class="form-textarea"
-        [class.error]="submitted && f['description'].errors">
-      </textarea>
-      <div class="error-message" *ngIf="submitted && f['description'].errors">
-        <span *ngIf="f['description'].errors['required']">La description est requise</span>
-        <span *ngIf="f['description'].errors['minlength']">La description doit contenir au moins 20 caractères</span>
-      </div>
-    </div>
-
-    <!-- Progress -->
-    <div class="form-group">
-      <label for="progress">
-        Avancement (%) * 
-        <span class="progress-value">{{ f['progress'].value || 50 }}%</span>
-      </label>
-      <input 
-        type="range" 
-        id="progress" 
-        formControlName="progress"
-        min="0"
-        max="100"
-        step="5"
-        class="form-range">
-      <div class="progress-bar-display">
-        <div 
-          class="progress-fill" 
-          [style.width.%]="f['progress'].value || 50"
-          [ngClass]="{
-            'progress-high': (f['progress'].value || 50) >= 75,
-            'progress-medium': (f['progress'].value || 50) >= 50 && (f['progress'].value || 50) < 75,
-            'progress-low': (f['progress'].value || 50) < 50
-          }">
-        </div>
-      </div>
-      <div class="error-message" *ngIf="submitted && f['progress'].errors">
-        <span *ngIf="f['progress'].errors['required']">L'avancement est requis</span>
-      </div>
-    </div>
-
-    <!-- Issues -->
-    <div class="form-group">
-      <label for="issues">Problèmes Rencontrés</label>
-      <textarea 
-        id="issues" 
-        formControlName="issues"
-        placeholder="Décrivez les problèmes, blocages ou difficultés rencontrés..."
-        rows="4"
-        class="form-textarea">
-      </textarea>
-    </div>
-
-    <!-- Decisions -->
-    <div class="form-group">
-      <label for="decisions">Décisions Prises</label>
-      <textarea 
-        id="decisions" 
-        formControlName="decisions"
-        placeholder="Documentez les décisions prises pour résoudre les problèmes..."
-        rows="4"
-        class="form-textarea">
-      </textarea>
-    </div>
-
-    <!-- Form Actions -->
-    <div class="form-actions">
-      <button type="submit" class="btn btn-primary">
-        {{ isEditing ? 'Mettre à jour' : 'Créer' }}
-      </button>
-      <a [routerLink]="['/projects', projectId, 'followups']" class="btn btn-secondary">
-        Annuler
-      </a>
-    </div>
-  </form>
-</div>
+</form>

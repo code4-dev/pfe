@@ -1,4 +1,15 @@
-<app-navbar></app-navbar>
-<main class="main-content">
+@if (hideShell()) {
   <router-outlet></router-outlet>
-</main>
+} @else {
+  <div class="layout-shell">
+    <app-sidebar></app-sidebar>
+
+    <div class="layout-main">
+      <app-navbar></app-navbar>
+
+      <main class="page-content">
+        <router-outlet></router-outlet>
+      </main>
+    </div>
+  </div>
+}

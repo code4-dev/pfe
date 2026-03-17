@@ -97,6 +97,14 @@ export class Auth {
   }
 
   getHomeRoute(): string {
-    return this.hasRole('admin') ? '/admin/users' : '/dashboard';
+    if (this.hasRole('admin')) {
+      return '/dashboard';
+    }
+
+    if (this.hasRole('pilote')) {
+      return '/suivi-projets';
+    }
+
+    return '/projects';
   }
 }

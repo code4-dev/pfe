@@ -1,103 +1,80 @@
 <section class="admin-page">
   <header class="page-header">
-    <h2>Administration des utilisateurs</h2>
-    <p>Creation, modification, suppression et attribution des roles.</p>
+    <div>
+      <h2>Administration des utilisateurs</h2>
+      <p>Gestion des comptes, des roles et des droits d'acces.</p>
+    </div>
+    <a class="create-user-link" routerLink="/admin/users/create">+ Creer un utilisateur</a>
   </header>
 
   <div class="feedback error" *ngIf="error">{{ error }}</div>
   <div class="feedback success" *ngIf="message">{{ message }}</div>
 
   <article class="panel">
-    <h3>Creer un utilisateur</h3>
-    <form #createForm="ngForm" class="form-grid" (ngSubmit)="createUser()">
-      <label>
-        Nom
-        <input type="text" name="createName" [(ngModel)]="createModel.name" required minlength="3">
-      </label>
-      <label>
-        Email
-        <input type="email" name="createEmail" [(ngModel)]="createModel.email" required>
-      </label>
-      <label>
-        Mot de passe
-        <input type="password" name="createPassword" [(ngModel)]="createModel.password" required minlength="8">
-      </label>
-      <label>
-        Role
-        <select name="createRole" [(ngModel)]="createModel.role" required>
-          <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
-        </select>
-      </label>
-      <button type="submit" [disabled]="saving || createForm.invalid">Creer</button>
-    </form>
-  </article>
+    <div class="panel-header">
+      <h3>Liste des utilisateurs</h3>
+      <span class="result-count">{{ filteredUsers.length }} utilisateurs</span>
+    </div>
 
-  <article class="panel">
-    <h3>Liste des utilisateurs</h3>
-    <p *ngIf="loading">Chargement...</p>
-    <div class="table-wrapper" *ngIf="!loading">
+    <div class="search-block">
+      <input
+        type="search"
+        name="searchUsers"
+        placeholder="Rechercher un utilisateur..."
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()">
+    </div>
+
+    <p class="loading-text" *ngIf="loading">Chargement...</p>
+    <p class="empty-state" *ngIf="!loading && filteredUsers.length === 0">Aucun utilisateur trouve.</p>
+
+    <div class="table-wrapper" *ngIf="!loading && filteredUsers.length > 0">
       <table>
         <thead>
           <tr>
             <th>Nom</th>
             <th>Email</th>
             <th>Role actuel</th>
-            <th>Attribuer role</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let user of users; trackBy: trackByUserId">
-            <td>{{ user.name }}</td>
+          <tr *ngFor="let user of displayedUsers; trackBy: trackByUserId">
+            <td class="name-cell">{{ user.name }}</td>
             <td>{{ user.email }}</td>
-            <td><span class="pill">{{ user.role }}</span></td>
-            <td class="role-cell">
-              <select [name]="'role-' + user.id" [(ngModel)]="roleDrafts[user.id]">
-                <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
-              </select>
-              <button type="button" [disabled]="!canApplyRole(user)" (click)="applyRole(user)">Appliquer</button>
+            <td>
+              <div class="role-cell">
+                <span class="role-badge" [ngClass]="getRoleClass(user.role)">
+                  {{ getRoleLabel(user.role) }}
+                </span>
+                <select [name]="'role-' + user.id" [(ngModel)]="roleDrafts[user.id]">
+                  <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
+                </select>
+              </div>
             </td>
             <td class="actions-cell">
-              <button type="button" [disabled]="processingUserId === user.id" (click)="startEdit(user)">Modifier</button>
+              <button class="btn btn-primary" type="button" [disabled]="processingUserId === user.id" (click)="startEdit(user)">
+                &#9998; Modifier
+              </button>
               <button
                 type="button"
-                class="danger"
+                class="btn btn-danger"
                 [disabled]="isCurrentUser(user.id) || processingUserId === user.id"
                 (click)="deleteUser(user)">
-                Supprimer
+                &#128465; Supprimer
+              </button>
+              <button class="btn btn-soft" type="button" [disabled]="!canApplyRole(user)" (click)="applyRole(user)">
+                &#10003; Appliquer
               </button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-  </article>
 
-  <article class="panel" *ngIf="editUserId">
-    <h3>Modifier l'utilisateur</h3>
-    <form #editForm="ngForm" class="form-grid" (ngSubmit)="saveEdit()">
-      <label>
-        Nom
-        <input type="text" name="editName" [(ngModel)]="editModel.name" required minlength="3">
-      </label>
-      <label>
-        Email
-        <input type="email" name="editEmail" [(ngModel)]="editModel.email" required>
-      </label>
-      <label>
-        Nouveau mot de passe (optionnel)
-        <input type="password" name="editPassword" [(ngModel)]="editModel.password" minlength="8">
-      </label>
-      <label>
-        Role
-        <select name="editRole" [(ngModel)]="editModel.role" required>
-          <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
-        </select>
-      </label>
-      <div class="form-actions">
-        <button type="submit" [disabled]="saving || editForm.invalid">Enregistrer</button>
-        <button type="button" class="secondary" (click)="cancelEdit()">Annuler</button>
-      </div>
-    </form>
+    <div class="panel-footer" *ngIf="!loading && (hasMoreUsers || canShowLess)">
+      <button class="btn btn-secondary" type="button" *ngIf="hasMoreUsers" (click)="showMore()">Voir plus</button>
+      <button class="btn btn-secondary" type="button" *ngIf="canShowLess" (click)="showLess()">Voir moins</button>
+    </div>
   </article>
 </section>

@@ -1,0 +1,54 @@
+<section class="admin-user-form-page">
+  <article class="panel centered-card">
+    <header class="panel-top">
+      <div>
+        <h2>Creation utilisateur</h2>
+        <p>Ajoutez un nouveau compte utilisateur.</p>
+      </div>
+      <a class="back-link" routerLink="/admin/users">Retour a la liste</a>
+    </header>
+
+    <div class="feedback error" *ngIf="error">{{ error }}</div>
+    <div class="feedback success" *ngIf="message">{{ message }}</div>
+
+    <form #createForm="ngForm" class="form-vertical" (ngSubmit)="createUser()">
+      <label>
+        Nom
+        <input type="text" name="createName" [(ngModel)]="createModel.name" required minlength="3">
+      </label>
+
+      <label>
+        Email
+        <input type="email" name="createEmail" [(ngModel)]="createModel.email" required>
+      </label>
+
+      <label>
+        Mot de passe
+        <div class="password-input-wrap">
+          <input [type]="showPassword ? 'text' : 'password'" name="createPassword" [(ngModel)]="createModel.password" required>
+          <button
+            type="button"
+            class="toggle-password-btn"
+            [class.active]="showPassword"
+            [attr.aria-label]="showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+            (click)="togglePasswordVisibility()">
+            👁
+          </button>
+        </div>
+      </label>
+      <p class="field-hint">8+ caracteres avec majuscule, minuscule, chiffre et un symbole.</p>
+
+      <label>
+        Role
+        <select name="createRole" [(ngModel)]="createModel.role" required>
+          <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
+        </select>
+      </label>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit" [disabled]="saving || createForm.invalid">+ Creer l'utilisateur</button>
+        <a class="btn btn-secondary" routerLink="/admin/users">Annuler</a>
+      </div>
+    </form>
+  </article>
+</section>

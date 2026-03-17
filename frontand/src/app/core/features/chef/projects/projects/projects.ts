@@ -2,6 +2,7 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProjectService } from '../../../../services/project';
+import { Auth } from '../../../../services/auth';
 
 @Component({
   selector: 'app-projects',
@@ -10,7 +11,10 @@ import { ProjectService } from '../../../../services/project';
   styleUrl: './projects.css',
 })
 export class Projects implements OnInit {
- private projectService = inject(ProjectService);
+  private projectService = inject(ProjectService);
+  private auth = inject(Auth);
+
+  readonly isPilote = computed(() => this.auth.hasRole('pilote'));
   
   // 1. On garde uniquement les signaux pour les filtres
   filterStatus = signal<string>('all');
@@ -67,5 +71,13 @@ export class Projects implements OnInit {
   getStatusClass(status: string): string {
     // Transforme "En cours" en "en-cours" pour le CSS
     return `status-${status.toLowerCase().replace(/\s+/g, '-')}`;
+  }
+
+  getPageTitle(): string {
+    return this.isPilote() ? 'Suivi Projets' : 'Mes Projets';
+  }
+
+  canManageProjects(): boolean {
+    return !this.isPilote();
   }
 }

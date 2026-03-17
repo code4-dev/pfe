@@ -1,44 +1,11 @@
-<nav class="navbar">
-  <div class="navbar-container">
-     <div class="nav-section-left">
-      <img src="https://imgs.search.brave.com/mKiqfWAdVolDsgzyxu5jN-Oo-Oi_s4jIu_5pMDUtHVM/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/dGhkLnRuL3dwLWNv/bnRlbnQvdXBsb2Fk/cy8yMDE3LzEwL2Nu/aS0zMDB4MTgwLmpw/Zw" alt="Logo Gauche" class="nav-logo">
-    </div>
-    
-    <div class="navbar-brand">
-      <h1>Gestion de Projets</h1>
-    </div>
-   
-    <div class="navbar-menu" *ngIf="auth.isLoggedIn()">
-      <ul class="nav-links">
-        <li>
-          <a 
-            [routerLink]="isAdmin() ? '/admin/users' : '/dashboard'"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{exact: true}">
-            {{ isAdmin() ? 'Administration' : 'Dashboard' }}
-          </a>
-        </li>
-        <li *ngIf="!isAdmin()">
-          <a 
-            routerLink="/projects" 
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{exact: true}">
-            Mes Projets
-          </a>
-        </li>
-        <li *ngIf="isAdmin()">
-          <a
-            routerLink="/admin/nomenclatures"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{exact: true}">
-            Nomenclatures
-          </a>
-        </li>
-      </ul>
-      <div class="navbar-user">
-        <span class="user-name">{{ auth.getCurrentUser()?.name }}</span>
-        <button class="logout-btn" (click)="logout()">Déconnexion</button>
-      </div>
-    </div>
+<header class="topbar">
+  <div class="topbar-left">
+    <img src="https://imgs.search.brave.com/j9S2PZY44D6hi2UE9pZy2VIbGjRTJlizz1TLx-rXApA/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93ZWVu/LnRuL21lZGlhL2Nh/Y2hlL215X0xvZ290/aHVtYi9yYy9sdEdY/VjZpbC8vdXBsb2Fk/cy9pbWFnZS8xODc3/NS8xODc3My9hdmF0/YXIvYXZhdGFyLnBu/Zw" alt="Logo societe" class="company-logo" />
+    <span class="app-name">Gestion de Projets</span>
   </div>
-</nav>
+
+  <div class="topbar-right" *ngIf="auth.getCurrentUser() as user">
+    <span class="user-name">{{ user.name }}</span>
+    <button type="button" class="logout-btn" (click)="logout()">Deconnexion</button>
+  </div>
+</header>

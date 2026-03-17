@@ -1,0 +1,56 @@
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">CNI</div>
+    <div>
+      <p class="sidebar-title">Navigation</p>
+      <p class="sidebar-subtitle">{{ currentRole() | uppercase }}</p>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <ul *ngIf="isAdmin()">
+      <li>
+        <a routerLink="/dashboard" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+          <span class="nav-icon">🏠</span>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/admin/users" routerLinkActive="active-link">
+          <span class="nav-icon">👥</span>
+          <span>Gestion Utilisateurs</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/admin/nomenclatures" routerLinkActive="active-link">
+          <span class="nav-icon">📚</span>
+          <span>Gestion Nomenclatures</span>
+        </a>
+      </li>
+    </ul>
+
+    <ul *ngIf="isChef()">
+      <li>
+        <a routerLink="/projects" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+          <span class="nav-icon">📁</span>
+          <span>Mes Projets</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/projects/new" routerLinkActive="active-link">
+          <span class="nav-icon">➕</span>
+          <span>Creer Projet</span>
+        </a>
+      </li>
+    </ul>
+
+    <ul *ngIf="isPilote()">
+      <li>
+        <a routerLink="/suivi-projets" routerLinkActive="active-link">
+          <span class="nav-icon">📈</span>
+          <span>Suivi Projets</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</aside>

@@ -1,7 +1,7 @@
 <div class="projects-container">
   <div class="page-header">
-    <h2>Mes Projets</h2>
-    <a routerLink="/projects/new" class="btn btn-primary">+ Nouveau Projet</a>
+    <h2>{{ getPageTitle() }}</h2>
+    <a *ngIf="canManageProjects()" routerLink="/projects/new" class="btn btn-primary">+ Nouveau Projet</a>
   </div>
 
   <div class="filters-section">
@@ -84,12 +84,13 @@
                      title="Voir les suivis">
                      Suivis
                   </a>
-                  <a [routerLink]="['/projects', project.id, 'edit']" 
+                  <a *ngIf="canManageProjects()"
+                     [routerLink]="['/projects', project.id, 'edit']" 
                      class="btn btn-small btn-secondary" 
                      title="Modifier le projet">
                      Modifier
                   </a>
-                  <button 
+                  <button *ngIf="canManageProjects()"
                     class="btn btn-small btn-danger" 
                     (click)="deleteProject(project.id)"
                     title="Supprimer le projet">
@@ -114,8 +115,9 @@
         </button>
       } @else {
         <p>Vous n'avez pas encore de projet enregistré dans le système.</p>
-        <a routerLink="/projects/new" class="btn btn-primary">Créer votre premier projet</a>
+        <a *ngIf="canManageProjects()" routerLink="/projects/new" class="btn btn-primary">Créer votre premier projet</a>
       }
     </div>
   }
 </div>
+

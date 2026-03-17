@@ -1,80 +1,241 @@
-<div class="form-container">
-  <div class="form-header">
-    <h2>{{ isEditing ? 'Modifier le Projet' : 'Créer un Nouveau Projet' }}</h2>
-    <a routerLink="/projects" class="close-link">← Retour aux projets</a>
+﻿<form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+  <div class="page">
+    <div class="top-actions no-print">
+      <a routerLink="/projects" class="back-link">Retour aux projets</a>
+    </div>
+
+    <table class="header-table">
+      <tr>
+        <td class="logo-box">
+          <img src="https://thd.tn/wp-content/uploads/2017/10/cni.jpg" alt="Logo">
+        </td>
+        <td>
+          <div class="main-title">SYSTEME DE MANAGEMENT DE LA QUALITE</div>
+          <hr>
+          <div class="sub-title">Fiche de Projet</div>
+        </td>
+      </tr>
+    </table>
+
+    <div class="form-error" *ngIf="submitted && projectForm.invalid">
+      Merci de remplir tous les champs obligatoires (*).
+    </div>
+
+    <table>
+      <tr>
+        <td><strong>Projet * :</strong> <input type="text" required formControlName="name" [class.invalid-field]="submitted && f['name'].invalid"></td>
+        <td><strong>Client * :</strong> <input type="text" required formControlName="clientName" [class.invalid-field]="submitted && f['clientName'].invalid"></td>
+      </tr>
+    </table>
+
+    <div class="section-title">1. Identification</div>
+    <table>
+      <tr>
+        <td><strong>Cadre contractuel * :</strong></td>
+        <td colspan="3"><input type="text" required formControlName="projectContext" [class.invalid-field]="submitted && f['projectContext'].invalid"></td>
+      </tr>
+
+      <tr>
+        <td><strong>Caractere Projet * :</strong></td>
+        <td colspan="3">
+          <div class="checkbox-group">
+            <label>
+              <input
+                type="checkbox"
+                [checked]="isProjectCharacter('National')"
+                (change)="setProjectCharacter('National', $any($event.target).checked)">
+              National
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                [checked]="isProjectCharacter('Commun')"
+                (change)="setProjectCharacter('Commun', $any($event.target).checked)">
+              Administration
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                [checked]="isProjectCharacter('CNI')"
+                (change)="setProjectCharacter('CNI', $any($event.target).checked)">
+              CNI
+            </label>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><strong>Type Projet * :</strong></td>
+        <td colspan="3">
+          <div class="radio-group">
+            <label><input type="radio" required formControlName="projectType" value="Nouveau"> Nouveau</label>
+            <label><input type="radio" required formControlName="projectType" value="Evolution"> Evolution</label>
+            <label><input type="radio" required formControlName="projectType" value="Refonte"> Refonte</label>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <div class="section-title">2. Presentation *</div>
+    <table><tr><td><textarea rows="4" required formControlName="description" [class.invalid-field]="submitted && f['description'].invalid"></textarea></td></tr></table>
+
+    <div class="section-title">3. Historique</div>
+    <table><tr><td><textarea rows="4" formControlName="historical"></textarea></td></tr></table>
+
+    <div class="section-title">4. Perimetre *</div>
+    <table><tr><td><textarea rows="4" required formControlName="perimeter" [class.invalid-field]="submitted && f['perimeter'].invalid"></textarea></td></tr></table>
+
+    <div class="section-title">5. Organisation et conduite de projet</div>
+    <table>
+      <tr>
+        <td><strong>Maitre d'ouvrage * :</strong></td>
+        <td><input type="text" required formControlName="projectOwner" [class.invalid-field]="submitted && f['projectOwner'].invalid"></td>
+      </tr>
+      <tr>
+        <td><strong>Maitre d'oeuvre * :</strong></td>
+        <td><input type="text" required formControlName="projectLead" [class.invalid-field]="submitted && f['projectLead'].invalid"></td>
+      </tr>
+      <tr>
+        <td><strong>Equipe Projet * :</strong></td>
+        <td><textarea rows="2" required formControlName="projectTeam" [class.invalid-field]="submitted && f['projectTeam'].invalid"></textarea></td>
+      </tr>
+      <tr>
+        <td><strong>Modalite dev. * :</strong></td>
+        <td>
+          <div class="radio-group">
+            <label><input type="radio" required formControlName="developmentMode" value="I"> Interne</label>
+            <label><input type="radio" required formControlName="developmentMode" value="ST"> Sous-traitance</label>
+            <label><input type="radio" required formControlName="developmentMode" value="CO"> Co-traitance</label>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <div class="section-title">6. Estimation des charges</div>
+    <table>
+      <thead>
+        <tr>
+          <th>N°</th>
+          <th>Prestations</th>
+          <th>Profil</th>
+          <th>Periode</th>
+          <th>Charge/HM</th>
+          <th>Livrables</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of [1,2,3,4]">
+          <td>{{ row }}</td>
+          <td><input type="text"></td>
+          <td><input type="text"></td>
+          <td><input type="text"></td>
+          <td><input type="number"></td>
+          <td><input type="text"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="section-title">7. Estimation du budget</div>
+    <table>
+      <tr>
+        <th>profils</th>
+        <th>CP</th>
+        <th>ID</th>
+        <th>Total</th>
+      </tr>
+      <tr>
+        <td>Charge par Profil (en H/M)</td>
+        <td><input type="number" formControlName="budgetChargeCp"></td>
+        <td><input type="number" formControlName="budgetChargeId"></td>
+        <td><input type="number" formControlName="budgetChargeTotal"></td>
+      </tr>
+      <tr>
+        <td>Budget (MD/HT)</td>
+        <td><input type="number" formControlName="budgetMdCp"></td>
+        <td><input type="number" formControlName="budgetMdId"></td>
+        <td><input type="number" formControlName="budgetMdTotal"></td>
+      </tr>
+      <tr>
+        <td><strong>Budget global obligatoire (MD/HT)</strong></td>
+        <td colspan="3">
+          <input type="number" min="0" required formControlName="estimatedBudgetMd" [class.invalid-field]="submitted && f['estimatedBudgetMd'].invalid">
+        </td>
+      </tr>
+    </table>
+
+    <div class="section-title">8. Delais previsionnels</div>
+    <table>
+      <tr>
+        <td>
+          Charge globale (H/M) :
+          <input type="number" min="0" style="width:90px; display:inline;" required formControlName="estimatedChargeHm" [class.invalid-field]="submitted && f['estimatedChargeHm'].invalid">
+          &nbsp;&nbsp;
+          Le delai previsionnel du projet est de
+          <input type="number" min="0" style="width:80px; display:inline;" required formControlName="estimatedDelayMonths" [class.invalid-field]="submitted && f['estimatedDelayMonths'].invalid">
+          mois (hors delais de validation)
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Date echeance * : <input type="date" style="width:180px; display:inline;" required formControlName="dueDate" [class.invalid-field]="submitted && f['dueDate'].invalid">
+          &nbsp;&nbsp; Statut * :
+          <select style="width:180px; display:inline;" required formControlName="status" [class.invalid-field]="submitted && f['status'].invalid">
+            <option *ngFor="let option of statusOptions" [value]="option.value">{{ option.label }}</option>
+          </select>
+        </td>
+      </tr>
+    </table>
+
+    <div class="section-title">9. Risques potentiels *</div>
+    <table><tr><td><textarea rows="3" required formControlName="potentialRisks" [class.invalid-field]="submitted && f['potentialRisks'].invalid"></textarea></td></tr></table>
+
+    <div class="section-title">10. Pre-requis *</div>
+    <table><tr><td><textarea rows="3" required formControlName="prerequisites" [class.invalid-field]="submitted && f['prerequisites'].invalid"></textarea></td></tr></table>
   </div>
 
-  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="project-form">
-    <!-- Project Name -->
-    <div class="form-group">
-      <label for="name">Nom du Projet *</label>
-      <input 
-        type="text" 
-        id="name" 
-        formControlName="name"
-        placeholder="Ex: Développement du site Web"
-        class="form-input"
-        [class.error]="submitted && f['name'].errors">
-      <div class="error-message" *ngIf="submitted && f['name'].errors">
-        <span *ngIf="f['name'].errors['required']">Le nom est requis</span>
-        <span *ngIf="f['name'].errors['minlength']">Le nom doit contenir au moins 3 caractères</span>
-      </div>
+  <div class="page-break"></div>
+
+  <div class="page">
+    <div class="planning-title">
+      Planning du projet "{{ f['name'].value || 'Designation Projet' }}"
     </div>
 
-    <!-- Description -->
-    <div class="form-group">
-      <label for="description">Description *</label>
-      <textarea 
-        id="description" 
-        formControlName="description"
-        placeholder="Décrivez le projet en détail..."
-        rows="4"
-        class="form-textarea"
-        [class.error]="submitted && f['description'].errors">
-      </textarea>
-      <div class="error-message" *ngIf="submitted && f['description'].errors">
-        <span *ngIf="f['description'].errors['required']">La description est requise</span>
-        <span *ngIf="f['description'].errors['minlength']">La description doit contenir au moins 10 caractères</span>
-      </div>
-    </div>
+    <table class="planning-table">
+      <thead>
+        <tr>
+          <th>Actions</th>
+          <th>Profil</th>
+          <th>Charge H/M</th>
+          <th *ngFor="let m of planningMonths">{{ m }}</th>
+        </tr>
+      </thead>
 
-    <!-- Status -->
-    <div class="form-group">
-      <label for="status">Statut *</label>
-      <select 
-        id="status" 
-        formControlName="status"
-        class="form-select"
-        [class.error]="submitted && f['status'].errors">
-        <option *ngFor="let option of statusOptions" [value]="option.value">
-          {{ option.label }}
-        </option>
-      </select>
-      <div class="error-message" *ngIf="submitted && f['status'].errors">
-        <span *ngIf="f['status'].errors['required']">Le statut est requis</span>
-      </div>
-    </div>
+      <tbody>
+        <tr *ngFor="let row of planningRows; trackBy: trackByRow">
+          <td><input type="text"></td>
+          <td>
+            <select>
+              <option>CP</option>
+              <option>ID</option>
+              <option>CMP</option>
+              <option>CMU</option>
+            </select>
+          </td>
+          <td><input type="number"></td>
+          <td *ngFor="let m of planningMonths; trackBy: trackByMonth">
+            <input *ngIf="m !== '..'" type="checkbox">
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-    <!-- Due Date -->
-    <div class="form-group">
-      <label for="dueDate">Date d'Échéance *</label>
-      <input 
-        type="date" 
-        id="dueDate" 
-        formControlName="dueDate"
-        class="form-input"
-        [class.error]="submitted && f['dueDate'].errors">
-      <div class="error-message" *ngIf="submitted && f['dueDate'].errors">
-        <span *ngIf="f['dueDate'].errors['required']">La date d'échéance est requise</span>
-      </div>
+    <p class="foot-note">
+      (*) CP : Chef de Projet / ID : Ingenieur Developpeur / CMP : Comite de Pilotage / CMU : Comite utilisateurs
+    </p>
+    <div class="text-center no-print actions-row">
+      <button type="submit" class="btn btn-success">Enregistrer</button>
+      <button type="button" (click)="printPage()" class="btn btn-primary">Imprimer / PDF</button>
+      <button type="button" routerLink="/projects" class="btn btn-secondary">Annuler</button>
     </div>
-
-    <!-- Form Actions -->
-    <div class="form-actions">
-      <button type="submit" class="btn btn-primary">
-        {{ isEditing ? 'Mettre à jour' : 'Créer' }}
-      </button>
-      <a routerLink="/projects" class="btn btn-secondary">Annuler</a>
-    </div>
-  </form>
-</div>
+  </div>
+</form>

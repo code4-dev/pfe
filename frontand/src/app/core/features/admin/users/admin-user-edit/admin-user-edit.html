@@ -1,0 +1,47 @@
+<section class="admin-user-form-page">
+  <article class="panel centered-card" *ngIf="!loading; else loadingBlock">
+    <header class="panel-top">
+      <div>
+        <h2>Modification utilisateur</h2>
+        <p>Mettez a jour les informations et le role.</p>
+      </div>
+      <a class="back-link" routerLink="/admin/users">Retour a la liste</a>
+    </header>
+
+    <div class="feedback error" *ngIf="error">{{ error }}</div>
+    <div class="feedback success" *ngIf="message">{{ message }}</div>
+
+    <form #editForm="ngForm" class="form-vertical" (ngSubmit)="saveEdit()">
+      <label>
+        Nom
+        <input type="text" name="editName" [(ngModel)]="editModel.name" required minlength="3">
+      </label>
+
+      <label>
+        Email
+        <input type="email" name="editEmail" [(ngModel)]="editModel.email" required>
+      </label>
+
+      <label>
+        Nouveau mot de passe (optionnel)
+        <input type="password" name="editPassword" [(ngModel)]="editModel.password" minlength="8">
+      </label>
+
+      <label>
+        Role
+        <select name="editRole" [(ngModel)]="editModel.role" required>
+          <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
+        </select>
+      </label>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit" [disabled]="saving || editForm.invalid">&#9998; Enregistrer</button>
+        <a class="btn btn-secondary" routerLink="/admin/users">Annuler</a>
+      </div>
+    </form>
+  </article>
+
+  <ng-template #loadingBlock>
+    <p class="loading-text">Chargement...</p>
+  </ng-template>
+</section>

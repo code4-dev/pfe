@@ -156,9 +156,7 @@ export class Register implements OnInit {
         this.loading = false;
         if (err.status === 0) {
           this.error = 'Backend inaccessible (verifiez que le serveur tourne sur http://localhost:8080)';
-        } else if (err.status === 403) {
-          this.error = 'Acces refuse (403). Redemarrez le backend pour appliquer la configuration de securite.';
-        } else if (err.status === 409) {
+        }  else if (err.status === 409) {
           this.error = 'Cet email est deja utilise';
         } else if (err.status === 400) {
           this.error = this.extractBackendMessage(err) ?? 'Donnees invalides';

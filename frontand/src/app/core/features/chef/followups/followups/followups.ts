@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+﻿import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Project, ProjectService } from '../../../../services/project';
@@ -14,37 +14,66 @@ export class Followups implements OnInit {
   private route = inject(ActivatedRoute);
   private projectService = inject(ProjectService);
   private followupService = inject(FollowupService);
-  
+
   project: Project | null = null;
   followups: Followup[] = [];
   projectId: string | null = null;
 
   ngOnInit(): void {
     this.projectId = this.route.snapshot.paramMap.get('projectId');
-    if (this.projectId) {
-      this.loadProject();
-      this.loadFollowups();
+    if (!this.projectId) {
+      return;
     }
+    this.loadProject();
+    this.loadFollowups();
   }
 
   private loadProject(): void {
-    if (this.projectId) {
-      const project = this.projectService.getProjectById(this.projectId);
-      this.project = project || null;
+    if (!this.projectId) {
+      return;
     }
+
+    this.projectService.getProjectByIdFromApi(this.projectId).subscribe({
+      next: (project) => {
+        this.project = project;
+      },
+      error: (err) => {
+        console.error('Erreur chargement projet', err);
+      }
+    });
   }
 
   private loadFollowups(): void {
-    if (this.projectId) {
-      this.followups = this.followupService.getFollowupsByProject(this.projectId);
+    if (!this.projectId) {
+      return;
     }
+
+    this.followupService.listFollowups(this.projectId).subscribe({
+      next: (items) => {
+        this.followups = items;
+      },
+      error: (err) => {
+        console.error('Erreur chargement suivis', err);
+      }
+    });
   }
 
   deleteFollowup(id: string): void {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce suivi ?')) {
-      this.followupService.deleteFollowup(id);
-      this.loadFollowups();
+    if (!this.projectId) {
+      return;
     }
+    if (!confirm('Etes-vous sur de vouloir supprimer ce suivi ?')) {
+      return;
+    }
+
+    this.followupService.deleteFollowup(this.projectId, id).subscribe({
+      next: () => {
+        this.loadFollowups();
+      },
+      error: (err) => {
+        console.error('Erreur suppression suivi', err);
+      }
+    });
   }
 
   getProgressColor(progress: number): string {
