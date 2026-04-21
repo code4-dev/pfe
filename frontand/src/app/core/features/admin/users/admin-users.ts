@@ -150,8 +150,9 @@ export class AdminUsers implements OnInit {
     return this.users.filter((user) => {
       const nameMatches = user.name.toLowerCase().includes(query);
       const emailMatches = user.email.toLowerCase().includes(query);
+      const phoneMatches = (user.phone ?? '').toLowerCase().includes(query);
       const roleMatches = this.getRoleLabel(user.role).toLowerCase().includes(query);
-      return nameMatches || emailMatches || roleMatches;
+      return nameMatches || emailMatches || phoneMatches || roleMatches;
     });
   }
 

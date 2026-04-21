@@ -4,16 +4,17 @@
 
 .sidebar {
   position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
+  top: 10px;
+  left: 10px;
+  bottom: 10px;
   z-index: 30;
   width: 250px;
   padding: 24px 18px;
-  background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+  background: linear-gradient(180deg, #0f2c44 0%, #10253b 100%);
   color: #e2e8f0;
-  border-right: 1px solid #1f2937;
-  box-shadow: 8px 0 24px rgba(15, 23, 42, 0.15);
+  border: 1px solid #214660;
+  border-radius: 18px;
+  box-shadow: 10px 16px 30px rgba(15, 44, 68, 0.28);
 }
 
 .sidebar-header {
@@ -22,7 +23,7 @@
   gap: 12px;
   margin-bottom: 20px;
   padding-bottom: 16px;
-  border-bottom: 1px solid #334155;
+  border-bottom: 1px solid #2f536d;
 }
 
 .sidebar-logo {
@@ -30,10 +31,11 @@
   place-items: center;
   width: 40px;
   height: 40px;
-  border-radius: 12px;
+  border-radius: 14px;
   font-weight: 700;
-  background: #1f6feb;
+  background: linear-gradient(135deg, #1497da 0%, #0b6aa2 100%);
   color: #ffffff;
+  box-shadow: 0 8px 16px rgba(20, 151, 218, 0.3);
 }
 
 .sidebar-title {
@@ -62,7 +64,7 @@
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  color: #d1d5db;
+  color: #d7e5f2;
   border-radius: 10px;
   padding: 11px 12px;
   font-size: 14px;
@@ -71,31 +73,37 @@
 }
 
 .sidebar-nav a:hover {
-  background: #1f2937;
-  color: #f9fafb;
+  background: rgba(255, 255, 255, 0.09);
+  color: #ffffff;
   transform: translateX(2px);
 }
 
 .sidebar-nav a.active-link {
-  background: #1f6feb;
+  background: linear-gradient(135deg, #1387c5 0%, #0b6aa2 100%);
   color: #ffffff;
-  box-shadow: 0 8px 20px rgba(31, 111, 235, 0.3);
+  box-shadow: 0 8px 18px rgba(11, 106, 162, 0.32);
 }
 
 .nav-icon {
   display: inline-flex;
-  width: 18px;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
   justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 @media (max-width: 900px) {
   .sidebar {
     position: static;
     width: 100%;
+    margin: 10px;
     padding: 16px;
-    border-right: none;
-    border-bottom: 1px solid #1f2937;
-    box-shadow: none;
+    border: 1px solid #1f4c69;
+    box-shadow: 0 8px 18px rgba(12, 49, 74, 0.22);
   }
 
   .sidebar-nav ul {

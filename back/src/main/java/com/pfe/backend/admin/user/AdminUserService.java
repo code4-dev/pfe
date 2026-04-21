@@ -34,6 +34,7 @@ public class AdminUserService {
     var user = UserEntity.builder()
       .name(normalizeName(request.name()))
       .email(email)
+      .phone(normalizePhone(request.phone()))
       .passwordHash(passwordEncoder.encode(validatePassword(request.password())))
       .role(parseRole(request.role()))
       .build();
@@ -55,6 +56,9 @@ public class AdminUserService {
         throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists");
       }
       user.setEmail(normalizedEmail);
+    }
+    if (request.phone() != null) {
+      user.setPhone(normalizePhone(request.phone()));
     }
     if (request.password() != null) {
       user.setPasswordHash(passwordEncoder.encode(validatePassword(request.password())));
@@ -138,11 +142,20 @@ public class AdminUserService {
     return password;
   }
 
+  private String normalizePhone(String phone) {
+    if (phone == null) {
+      return null;
+    }
+    var normalized = phone.trim();
+    return normalized.isEmpty() ? null : normalized;
+  }
+
   private AdminUserController.UserResponse toDto(UserEntity user) {
     return new AdminUserController.UserResponse(
       user.getId(),
       user.getName(),
       user.getEmail(),
+      user.getPhone(),
       user.getRole().name().toLowerCase()
     );
   }

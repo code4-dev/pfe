@@ -84,6 +84,7 @@ public class AuthService {
         user.getId(),
         user.getName(),
         user.getEmail(),
+        user.getPhone(),
         user.getRole().name().toLowerCase()
       )
     );

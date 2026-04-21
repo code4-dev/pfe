@@ -2,6 +2,7 @@ package com.pfe.backend.followup;
 
 import com.pfe.backend.project.ProjectRepository;
 import com.pfe.backend.user.UserEntity;
+import com.pfe.backend.user.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class FollowupService {
   private final ProjectRepository projectRepository;
 
   public List<FollowupController.FollowupResponse> list(String projectId, UserEntity user) {
-    ensureProjectOwned(projectId, user);
+    ensureProjectReadable(projectId, user);
     return followupRepository.findByProjectIdOrderByUpdatedAtDesc(projectId)
       .stream()
       .map(this::toDto)
@@ -25,7 +26,7 @@ public class FollowupService {
   }
 
   public FollowupController.FollowupResponse get(String projectId, String id, UserEntity user) {
-    ensureProjectOwned(projectId, user);
+    ensureProjectReadable(projectId, user);
     return toDto(getOwnedFollowup(projectId, id));
   }
 
@@ -127,6 +128,20 @@ public class FollowupService {
     if (!project.getChefId().equals(user.getId())) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Forbidden");
     }
+  }
+
+  private void ensureProjectReadable(String projectId, UserEntity user) {
+    var project = projectRepository.findById(projectId)
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found"));
+    if (project.getChefId().equals(user.getId())) {
+      return;
+    }
+
+    if (user.getRole() == UserRole.PILOTE || user.getRole() == UserRole.ADMIN) {
+      return;
+    }
+
+    throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Forbidden");
   }
 
   private FollowupController.FollowupResponse toDto(FollowupEntity followup) {

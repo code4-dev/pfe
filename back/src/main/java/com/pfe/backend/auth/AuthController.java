@@ -27,7 +27,7 @@ public class AuthController {
   ) {
   }
 
-  public record UserResponse(String id, String name, String email, String role) {
+  public record UserResponse(String id, String name, String email, String phone, String role) {
   }
 
   public record LoginResponse(String accessToken, String tokenType, long expiresIn, UserResponse user) {

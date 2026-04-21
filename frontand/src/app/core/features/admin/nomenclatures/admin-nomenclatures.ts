@@ -18,6 +18,7 @@ import {
 })
 export class AdminNomenclatures implements OnInit {
   private adminService = inject(AdminService);
+  readonly defaultVisibleNomenclatures = 5;
 
   nomenclatures: Nomenclature[] = [];
   filterCategory = '';
@@ -25,6 +26,7 @@ export class AdminNomenclatures implements OnInit {
   saving = false;
   error = '';
   message = '';
+  visibleNomenclatures = this.defaultVisibleNomenclatures;
 
   createModel: CreateNomenclatureRequest = {
     category: '',
@@ -49,6 +51,18 @@ export class AdminNomenclatures implements OnInit {
     this.loadNomenclatures();
   }
 
+  get displayedNomenclatures(): Nomenclature[] {
+    return this.nomenclatures.slice(0, this.visibleNomenclatures);
+  }
+
+  get hasMoreNomenclatures(): boolean {
+    return this.displayedNomenclatures.length < this.nomenclatures.length;
+  }
+
+  get canShowLess(): boolean {
+    return !this.hasMoreNomenclatures && this.nomenclatures.length > this.defaultVisibleNomenclatures;
+  }
+
   loadNomenclatures(): void {
     this.loading = true;
     this.error = '';
@@ -56,6 +70,7 @@ export class AdminNomenclatures implements OnInit {
     this.adminService.listNomenclatures(category.length > 0 ? category : undefined).subscribe({
       next: (items) => {
         this.nomenclatures = items;
+        this.visibleNomenclatures = this.defaultVisibleNomenclatures;
         this.loading = false;
       },
       error: (err: HttpErrorResponse) => {
@@ -187,6 +202,14 @@ export class AdminNomenclatures implements OnInit {
 
   trackByNomenclatureId(_: number, item: Nomenclature): string {
     return item.id;
+  }
+
+  showMore(): void {
+    this.visibleNomenclatures += this.defaultVisibleNomenclatures;
+  }
+
+  showLess(): void {
+    this.visibleNomenclatures = this.defaultVisibleNomenclatures;
   }
 
   private extractErrorMessage(err: HttpErrorResponse, fallback: string): string {

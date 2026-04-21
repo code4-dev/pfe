@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface FollowupRepository extends MongoRepository<FollowupEntity, String> {
   List<FollowupEntity> findByProjectIdOrderByUpdatedAtDesc(String projectId);
   Optional<FollowupEntity> findByIdAndProjectId(String id, String projectId);
+  Optional<FollowupEntity> findTopByProjectIdOrderByUpdatedAtDesc(String projectId);
 }

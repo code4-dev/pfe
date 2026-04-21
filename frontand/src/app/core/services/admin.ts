@@ -8,12 +8,14 @@ export interface AdminUser {
   id: string;
   name: string;
   email: string;
+  phone?: string | null;
   role: UserRole;
 }
 
 export interface CreateAdminUserRequest {
   name: string;
   email: string;
+  phone?: string;
   password: string;
   role: UserRole;
 }
@@ -21,6 +23,7 @@ export interface CreateAdminUserRequest {
 export interface UpdateAdminUserRequest {
   name?: string;
   email?: string;
+  phone?: string;
   password?: string;
   role?: UserRole;
 }

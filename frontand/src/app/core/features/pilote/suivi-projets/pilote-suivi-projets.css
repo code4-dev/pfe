@@ -1,0 +1,95 @@
+:host {
+  display: block;
+}
+
+.pilote-page {
+  display: grid;
+  gap: 1rem;
+}
+
+.hero-card {
+  background: linear-gradient(135deg, #ffffff 0%, #eff8ff 100%);
+  border: 1px solid #dce5ee;
+  border-radius: 14px;
+  padding: 1.2rem;
+}
+
+.hero-card h2 {
+  color: #14344d;
+  font-weight: 700;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.75rem;
+}
+
+.stat-card {
+  border: 1px solid #dce5ee;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 0.65rem 0.85rem;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.stat-card span {
+  font-size: 0.78rem;
+  color: #607387;
+  text-transform: uppercase;
+}
+
+.stat-card strong {
+  font-size: 1.2rem;
+  color: #14344d;
+}
+
+.stat-card.active {
+  background: #eef6ff;
+  border-color: #cfe6ff;
+}
+
+.stat-card.done {
+  background: #effcf5;
+  border-color: #caedd9;
+}
+
+.stat-card.overdue {
+  background: #fff3f3;
+  border-color: #f3cfcf;
+}
+
+.card {
+  border: 1px solid #dce5ee;
+  border-radius: 14px;
+}
+
+.filters-row {
+  display: grid;
+  grid-template-columns: 1.5fr minmax(180px, 0.8fr);
+  gap: 0.75rem;
+}
+
+thead th {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  color: #435a6f;
+}
+
+tbody td {
+  color: #203549;
+}
+
+.empty-state {
+  border: 1px dashed #dce5ee;
+  border-radius: 12px;
+}
+
+@media (max-width: 900px) {
+  .filters-row {
+    grid-template-columns: 1fr;
+  }
+}

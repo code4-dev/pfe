@@ -11,20 +11,26 @@
     <ul *ngIf="isAdmin()">
       <li>
         <a routerLink="/dashboard" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
-          <span class="nav-icon">🏠</span>
+          <span class="nav-icon"><i class="bi bi-speedometer2"></i></span>
           <span>Dashboard</span>
         </a>
       </li>
       <li>
         <a routerLink="/admin/users" routerLinkActive="active-link">
-          <span class="nav-icon">👥</span>
+          <span class="nav-icon"><i class="bi bi-people-fill"></i></span>
           <span>Gestion Utilisateurs</span>
         </a>
       </li>
       <li>
         <a routerLink="/admin/nomenclatures" routerLinkActive="active-link">
-          <span class="nav-icon">📚</span>
+          <span class="nav-icon"><i class="bi bi-journal-text"></i></span>
           <span>Gestion Nomenclatures</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/notifications" routerLinkActive="active-link">
+          <span class="nav-icon"><i class="bi bi-bell-fill"></i></span>
+          <span>Notifications</span>
         </a>
       </li>
     </ul>
@@ -32,13 +38,13 @@
     <ul *ngIf="isChef()">
       <li>
         <a routerLink="/projects" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
-          <span class="nav-icon">📁</span>
+          <span class="nav-icon"><i class="bi bi-folder2-open"></i></span>
           <span>Mes Projets</span>
         </a>
       </li>
       <li>
         <a routerLink="/projects/new" routerLinkActive="active-link">
-          <span class="nav-icon">➕</span>
+          <span class="nav-icon"><i class="bi bi-plus-circle-fill"></i></span>
           <span>Creer Projet</span>
         </a>
       </li>
@@ -47,8 +53,14 @@
     <ul *ngIf="isPilote()">
       <li>
         <a routerLink="/suivi-projets" routerLinkActive="active-link">
-          <span class="nav-icon">📈</span>
+          <span class="nav-icon"><i class="bi bi-graph-up-arrow"></i></span>
           <span>Suivi Projets</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/notifications" routerLinkActive="active-link">
+          <span class="nav-icon"><i class="bi bi-bell-fill"></i></span>
+          <span>Notifications</span>
         </a>
       </li>
     </ul>

@@ -1,46 +1,48 @@
 <div class="projects-container">
   <div class="page-header">
     <h2>{{ getPageTitle() }}</h2>
-    <a *ngIf="canManageProjects()" routerLink="/projects/new" class="btn btn-primary">+ Nouveau Projet</a>
+    <div class="header-actions">
+      <a *ngIf="canManageProjects()" routerLink="/projects/new" class="btn btn-primary">+ Nouveau Projet</a>
+    </div>
   </div>
 
   <div class="filters-section">
     <div class="search-box">
-      <input 
-        type="text" 
-        placeholder="Rechercher un projet..." 
+      <input
+        type="text"
+        placeholder="Rechercher un projet..."
         class="search-input"
         [value]="searchText()"
         (input)="onSearchChange($event)">
     </div>
-    
+
     <div class="filter-buttons">
-      <button 
-        class="filter-btn" 
-        [class.active]="filterStatus() === 'all'" 
+      <button
+        class="filter-btn"
+        [class.active]="filterStatus() === 'all'"
         (click)="onFilterChange('all')">
         Tous ({{ filteredProjects().length }})
       </button>
-      <button 
-        class="filter-btn" 
+      <button
+        class="filter-btn"
         [class.active]="filterStatus() === 'planification'"
         (click)="onFilterChange('planification')">
         Planification
       </button>
-      <button 
-        class="filter-btn" 
+      <button
+        class="filter-btn"
         [class.active]="filterStatus() === 'en-cours'"
         (click)="onFilterChange('en-cours')">
         En cours
       </button>
-      <button 
-        class="filter-btn" 
+      <button
+        class="filter-btn"
         [class.active]="filterStatus() === 'termine'"
         (click)="onFilterChange('termine')">
-        Terminés
+        Termines
       </button>
-      <button 
-        class="filter-btn" 
+      <button
+        class="filter-btn"
         [class.active]="filterStatus() === 'suspendu'"
         (click)="onFilterChange('suspendu')">
         Suspendus
@@ -56,7 +58,7 @@
             <th>Nom du Projet</th>
             <th>Description</th>
             <th>Statut</th>
-            <th>Échéance</th>
+            <th>Echeance</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -79,19 +81,19 @@
               </td>
               <td class="actions-cell">
                 <div class="action-buttons">
-                  <a [routerLink]="['/projects', project.id, 'followups']" 
-                     class="btn btn-small btn-info" 
+                  <a [routerLink]="['/projects', project.id, 'followups']"
+                     class="btn btn-small btn-info"
                      title="Voir les suivis">
                      Suivis
                   </a>
                   <a *ngIf="canManageProjects()"
-                     [routerLink]="['/projects', project.id, 'edit']" 
-                     class="btn btn-small btn-secondary" 
+                     [routerLink]="['/projects', project.id, 'edit']"
+                     class="btn btn-small btn-secondary"
                      title="Modifier le projet">
                      Modifier
                   </a>
                   <button *ngIf="canManageProjects()"
-                    class="btn btn-small btn-danger" 
+                    class="btn btn-small btn-danger"
                     (click)="deleteProject(project.id)"
                     title="Supprimer le projet">
                     Supprimer
@@ -105,19 +107,18 @@
     </div>
   } @else {
     <div class="empty-state">
-      <div class="empty-icon">📋</div>
-      <h3>Aucun projet trouvé</h3>
-      
+      <div class="empty-icon">??</div>
+      <h3>Aucun projet trouve</h3>
+
       @if (filterStatus() !== 'all' || searchText()) {
-        <p>Essayez de modifier vos critères de recherche ou de réinitialiser les filtres.</p>
+        <p>Essayez de modifier vos criteres de recherche ou de reinitialiser les filtres.</p>
         <button class="btn btn-secondary" (click)="onFilterChange('all'); searchText.set('')">
           Effacer les filtres
         </button>
       } @else {
-        <p>Vous n'avez pas encore de projet enregistré dans le système.</p>
-        <a *ngIf="canManageProjects()" routerLink="/projects/new" class="btn btn-primary">Créer votre premier projet</a>
+        <p>Vous n'avez pas encore de projet enregistre dans le systeme.</p>
+        <a *ngIf="canManageProjects()" routerLink="/projects/new" class="btn btn-primary">Creer votre premier projet</a>
       }
     </div>
   }
 </div>
-

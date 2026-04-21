@@ -15,6 +15,46 @@
   margin: 0;
 }
 
+.header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.feedback {
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 15px;
+}
+
+.feedback.error {
+  background: #fde8e8;
+  color: #8e2727;
+}
+
+.feedback.success {
+  background: #e6f8e8;
+  color: #1f6a33;
+}
+
+.overdue-panel {
+  background: #fff;
+  border: 1px solid #ecf0f1;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.overdue-panel h3 {
+  margin: 0 0 12px;
+  color: #2c3e50;
+}
+
+.empty-inline {
+  margin: 0;
+  color: #7f8c8d;
+}
+
 /* Filters */
 .filters-section {
   background: white;
@@ -249,6 +289,11 @@
     flex-direction: column;
     gap: 15px;
     align-items: flex-start;
+  }
+
+  .header-actions {
+    width: 100%;
+    flex-wrap: wrap;
   }
 
   .projects-table {

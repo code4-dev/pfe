@@ -19,21 +19,30 @@ public class DataInitializer implements CommandLineRunner {
 
   @Override
   public void run(String... args) {
-    userRepository.findByEmailIgnoreCase("admin@example.com").orElseGet(() ->
+    userRepository.findByEmailIgnoreCase("admin@gmail.com").orElseGet(() ->
       userRepository.save(UserEntity.builder()
         .name("Administrateur")
-        .email("admin@example.com")
+        .email("admin@gmail.com")
         .passwordHash(passwordEncoder.encode("password123"))
         .role(UserRole.ADMIN)
         .build())
     );
 
-    userRepository.findByEmailIgnoreCase("chef@example.com").orElseGet(() ->
+    userRepository.findByEmailIgnoreCase("chef@gmail.com").orElseGet(() ->
       userRepository.save(UserEntity.builder()
         .name("Chef de Projet")
-        .email("chef@example.com")
+        .email("chef@gmail.com")
         .passwordHash(passwordEncoder.encode("password123"))
         .role(UserRole.CHEF)
+        .build())
+    );
+
+    userRepository.findByEmailIgnoreCase("pilote@gmail.com").orElseGet(() ->
+      userRepository.save(UserEntity.builder()
+        .name("Pilote Qualite")
+        .email("pilote@gmail.com")
+        .passwordHash(passwordEncoder.encode("password123"))
+        .role(UserRole.PILOTE)
         .build())
     );
 

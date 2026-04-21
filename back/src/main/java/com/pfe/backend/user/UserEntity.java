@@ -31,6 +31,8 @@ public class UserEntity implements UserDetails {
   @Indexed(unique = true)
   private String email;
 
+  private String phone;
+
   @Field("password_hash")
   private String passwordHash;
 

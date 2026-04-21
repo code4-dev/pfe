@@ -27,6 +27,7 @@ export class AdminUserCreate {
   createModel: CreateAdminUserRequest = {
     name: '',
     email: '',
+    phone: '',
     password: '',
     role: 'chef'
   };
@@ -37,6 +38,7 @@ export class AdminUserCreate {
 
     const name = this.createModel.name.trim();
     const email = this.createModel.email.trim().toLowerCase();
+    const phone = this.createModel.phone?.trim() ?? '';
 
     if (name.length < 3) {
       this.error = 'Le nom doit contenir au moins 3 caracteres.';
@@ -58,6 +60,7 @@ export class AdminUserCreate {
     const payload: CreateAdminUserRequest = {
       name,
       email,
+      phone: phone.length > 0 ? phone : undefined,
       password: this.createModel.password,
       role: this.createModel.role
     };

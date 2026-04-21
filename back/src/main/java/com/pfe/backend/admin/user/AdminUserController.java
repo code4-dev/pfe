@@ -27,12 +27,13 @@ import java.util.List;
 public class AdminUserController {
   private final AdminUserService adminUserService;
 
-  public record UserResponse(String id, String name, String email, String role) {
+  public record UserResponse(String id, String name, String email, String phone, String role) {
   }
 
   public record CreateUserRequest(
     @NotBlank @Size(min = 3, max = 120) String name,
     @Email @NotBlank String email,
+    @Size(max = 25) String phone,
     @NotBlank @Size(min = 8, max = 128) String password,
     @NotBlank String role
   ) {
@@ -41,6 +42,7 @@ public class AdminUserController {
   public record UpdateUserRequest(
     @Size(min = 3, max = 120) String name,
     @Email String email,
+    @Size(max = 25) String phone,
     @Size(min = 8, max = 128) String password,
     String role
   ) {

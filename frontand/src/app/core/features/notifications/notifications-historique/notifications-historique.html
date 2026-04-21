@@ -1,0 +1,181 @@
+<section class="container-fluid px-0 notifications-page">
+  <div class="hero-card">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+      <div>
+        <h2 class="h4 mb-1">Historique des notifications</h2>
+        <p class="text-muted mb-0">Suivi des alertes envoyees pour les fiches de suivi en retard.</p>
+      </div>
+
+      <button
+        *ngIf="isPiloteQualite"
+        type="button"
+        class="btn btn-primary d-inline-flex align-items-center gap-2"
+        (click)="envoyerMaintenant()"
+        [disabled]="envoiManuelEnCours"
+      >
+        <span class="spinner-border spinner-border-sm" *ngIf="envoiManuelEnCours"></span>
+        <i class="bi bi-send-check-fill" *ngIf="!envoiManuelEnCours"></i>
+        Verifier &amp; Notifier maintenant
+      </button>
+    </div>
+
+    <div class="stats-grid mt-3">
+      <article class="stat-card">
+        <span class="label">Total</span>
+        <strong>{{ totalNotifications }}</strong>
+      </article>
+      <article class="stat-card sent">
+        <span class="label">Envoyees</span>
+        <strong>{{ sentCount }}</strong>
+      </article>
+      <article class="stat-card failed">
+        <span class="label">Echecs</span>
+        <strong>{{ failedCount }}</strong>
+      </article>
+      <article class="stat-card pending">
+        <span class="label">En attente</span>
+        <strong>{{ pendingCount }}</strong>
+      </article>
+    </div>
+  </div>
+
+  <div class="alert alert-success" role="alert" *ngIf="successMessage">
+    <i class="bi bi-check-circle-fill me-2"></i>
+    {{ successMessage }}
+  </div>
+
+  <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    {{ errorMessage }}
+  </div>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <form class="row g-3 align-items-end" (ngSubmit)="enregistrerParametres()">
+        <div class="col-12 col-md-4">
+          <label class="form-label" for="delaiJours">Delai de retard (jours)</label>
+          <input
+            id="delaiJours"
+            name="delaiJours"
+            type="number"
+            class="form-control"
+            min="1"
+            required
+            [(ngModel)]="delaiJours"
+          />
+        </div>
+        <div class="col-12 col-md-auto">
+          <button type="submit" class="btn btn-outline-primary" [disabled]="sauvegardeParametresEnCours">
+            <span class="spinner-border spinner-border-sm me-2" *ngIf="sauvegardeParametresEnCours"></span>
+            Mettre a jour le delai
+          </button>
+        </div>
+        <div class="col-12 col-md">
+          <small class="text-muted" *ngIf="paramsUpdatedAt">
+            Derniere mise a jour: {{ paramsUpdatedAt | date:'dd/MM/yyyy HH:mm' }}
+          </small>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h3 class="h6 text-uppercase text-muted mb-0">Notifications envoyees</h3>
+        <button type="button" class="btn btn-sm btn-outline-secondary" (click)="chargerDonnees()">
+          <i class="bi bi-arrow-clockwise me-1"></i>
+          Actualiser
+        </button>
+      </div>
+
+      <div class="filters-grid mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Filtrer par projet, email ou fiche..."
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onFiltersChange()"
+        />
+
+        <select class="form-select" [(ngModel)]="statutFilter" (ngModelChange)="onFiltersChange()">
+          <option value="ALL">Tous les statuts</option>
+          <option value="ENVOYE">ENVOYE</option>
+          <option value="ECHEC">ECHEC</option>
+          <option value="EN_ATTENTE">EN_ATTENTE</option>
+        </select>
+
+        <select class="form-select" [(ngModel)]="canalFilter" (ngModelChange)="onFiltersChange()">
+          <option value="ALL">Tous les canaux</option>
+          <option value="EMAIL">EMAIL</option>
+          <option value="SMS">SMS</option>
+          <option value="EMAIL_SMS">EMAIL_SMS</option>
+        </select>
+
+        <select class="form-select" [(ngModel)]="triggerFilter" (ngModelChange)="onFiltersChange()">
+          <option value="ALL">Tous les declenchements</option>
+          <option value="MANUEL">Manuel</option>
+          <option value="AUTO">Automatique</option>
+        </select>
+      </div>
+
+      <div class="d-flex justify-content-center py-4" *ngIf="loading">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+
+      <div class="table-responsive" *ngIf="!loading && filteredHistorique.length > 0">
+        <table class="table table-hover align-middle mb-0 notif-table">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">Projet</th>
+              <th scope="col">Chef</th>
+              <th scope="col">Canal</th>
+              <th scope="col">Statut</th>
+              <th scope="col">Type</th>
+              <th scope="col">Date</th>
+              <th scope="col">Declenchement</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let notification of displayedHistorique; trackBy: trackByNotificationId">
+              <td>
+                <strong>{{ notification.projetNom }}</strong>
+                <small class="text-muted d-block">Fiche: {{ notification.ficheId }}</small>
+              </td>
+              <td>
+                <div>{{ notification.chefProjetEmail }}</div>
+                <small class="text-muted">{{ notification.chefProjetPhone || '-' }}</small>
+              </td>
+              <td>
+                <span [class]="getCanalClass(notification.canal)">{{ notification.canal }}</span>
+              </td>
+              <td>
+                <span class="badge" [class]="getBadgeClass(notification.statut)">
+                  {{ notification.statut }}
+                </span>
+              </td>
+              <td>{{ notification.type }}</td>
+              <td>{{ notification.dateEnvoi | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>
+                <span class="trigger-badge" [class.auto]="!notification.envoyeParPilote">
+                  {{ notification.envoyeParPilote ? 'Manuel' : 'Automatique' }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="text-center text-muted py-4" *ngIf="!loading && filteredHistorique.length === 0">
+        <i class="bi bi-inbox-fill me-2"></i>
+        Aucune notification pour le moment.
+      </div>
+    </div>
+  </div>
+   <div class="panel-footer" *ngIf="!loading && (hasMoreNotifications || canShowLess)">
+      <button class="btn btn-secondary" type="button" *ngIf="hasMoreNotifications" (click)="showMore()">Voir plus</button>
+      <button class="btn btn-secondary" type="button" *ngIf="canShowLess" (click)="showLess()">Voir moins</button>
+    </div>
+</section>

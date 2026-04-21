@@ -28,11 +28,13 @@ export class AdminUserEdit implements OnInit {
   editModel: {
     name: string;
     email: string;
+    phone: string;
     password: string;
     role: UserRole;
   } = {
     name: '',
     email: '',
+    phone: '',
     password: '',
     role: 'chef'
   };
@@ -77,6 +79,7 @@ export class AdminUserEdit implements OnInit {
 
     const name = this.editModel.name.trim();
     const email = this.editModel.email.trim().toLowerCase();
+    const phone = this.editModel.phone.trim();
 
     if (name.length < 3) {
       this.error = 'Le nom doit contenir au moins 3 caracteres.';
@@ -98,6 +101,7 @@ export class AdminUserEdit implements OnInit {
     const payload: UpdateAdminUserRequest = {
       name,
       email,
+      phone: phone.length > 0 ? phone : '',
       role: this.editModel.role
     };
 
@@ -122,6 +126,7 @@ export class AdminUserEdit implements OnInit {
     this.editModel = {
       name: user.name,
       email: user.email,
+      phone: user.phone ?? '',
       password: '',
       role: user.role
     };

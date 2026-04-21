@@ -39,7 +39,7 @@ export class RegistrationService {
       const demoUsers: User[] = [
         {
           id: '1',
-          email: 'chef@example.com',
+          email: 'chef@gmail.com',
           password: 'password123',
           fullName: 'Chef de Projet',
           role: 'chef',

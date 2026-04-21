@@ -127,6 +127,14 @@ td {
   align-items: end;
 }
 
+.panel-footer {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+  padding-left: 10px;
+}
+
 @media (max-width: 720px) {
   .filter-bar input {
     min-width: 100%;

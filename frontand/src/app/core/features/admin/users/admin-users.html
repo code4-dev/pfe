@@ -34,6 +34,7 @@
           <tr>
             <th>Nom</th>
             <th>Email</th>
+            <th>Telephone</th>
             <th>Role actuel</th>
             <th>Actions</th>
           </tr>
@@ -42,6 +43,7 @@
           <tr *ngFor="let user of displayedUsers; trackBy: trackByUserId">
             <td class="name-cell">{{ user.name }}</td>
             <td>{{ user.email }}</td>
+            <td>{{ user.phone || '-' }}</td>
             <td>
               <div class="role-cell">
                 <span class="role-badge" [ngClass]="getRoleClass(user.role)">

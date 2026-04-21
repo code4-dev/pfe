@@ -1,7 +1,9 @@
 package com.pfe.backend.project;
 
 import com.pfe.backend.user.UserEntity;
+import com.pfe.backend.user.UserRole;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,6 +17,13 @@ public class ProjectService {
   private final ProjectRepository projectRepository;
 
   public List<ProjectController.ProjectResponse> list(UserEntity user) {
+    if (canReadAllProjects(user)) {
+      return projectRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"))
+        .stream()
+        .map(this::toDto)
+        .toList();
+    }
+
     return projectRepository.findByChefIdOrderByCreatedAtDesc(user.getId())
       .stream()
       .map(this::toDto)
@@ -22,10 +31,19 @@ public class ProjectService {
   }
 
   public ProjectController.ProjectResponse get(String id, UserEntity user) {
+    if (canReadAllProjects(user)) {
+      return toDto(projectRepository.findById(id)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found")));
+    }
+
     return toDto(getOwned(id, user));
   }
 
   public ProjectController.ProjectResponse create(ProjectController.ProjectCreateRequest req, UserEntity user) {
+    if (user.getRole() == UserRole.PILOTE) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Pilote cannot create projects");
+    }
+
     var project = ProjectEntity.builder()
       .name(req.name())
       .description(req.description())
@@ -62,6 +80,10 @@ public class ProjectService {
   public ProjectController.ProjectResponse update(String id,
                                                   ProjectController.ProjectUpdateRequest req,
                                                   UserEntity user) {
+    if (user.getRole() == UserRole.PILOTE) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Pilote cannot update projects");
+    }
+
     var project = getOwned(id, user);
     if (req.name() != null) {
       project.setName(req.name());
@@ -145,6 +167,10 @@ public class ProjectService {
   }
 
   public void delete(String id, UserEntity user) {
+    if (user.getRole() == UserRole.PILOTE) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Pilote cannot delete projects");
+    }
+
     var project = getOwned(id, user);
     projectRepository.delete(project);
   }
@@ -158,6 +184,10 @@ public class ProjectService {
     }
 
     return project;
+  }
+
+  private boolean canReadAllProjects(UserEntity user) {
+    return user.getRole() == UserRole.PILOTE || user.getRole() == UserRole.ADMIN;
   }
 
   private ProjectController.ProjectResponse toDto(ProjectEntity project) {

@@ -5,6 +5,10 @@
   </div>
 
   <div class="topbar-right" *ngIf="auth.getCurrentUser() as user">
+    <a *ngIf="canAccessNotifications()" routerLink="/notifications" class="notif-link" title="Notifications">
+      <i class="bi bi-bell-fill notif-icon"></i>
+      <span class="notif-badge" *ngIf="badgeCount > 0">{{ badgeCount }}</span>
+    </a>
     <span class="user-name">{{ user.name }}</span>
     <button type="button" class="logout-btn" (click)="logout()">Deconnexion</button>
   </div>

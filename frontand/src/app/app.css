@@ -5,13 +5,13 @@
 
 .layout-shell {
   min-height: 100vh;
-  background: #f4f6fb;
+  background: transparent;
   color: #1e293b;
 }
 
 .layout-main {
-  margin-left: 250px;
-  width: calc(100% - 250px);
+  margin-left: 270px;
+  width: calc(100% - 270px);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -20,6 +20,9 @@
 .page-content {
   padding: 24px 28px 32px;
   flex: 1;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 @media (max-width: 900px) {

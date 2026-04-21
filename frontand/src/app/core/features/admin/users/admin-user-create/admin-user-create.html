@@ -23,6 +23,11 @@
       </label>
 
       <label>
+        Telephone (optionnel)
+        <input type="text" name="createPhone" [(ngModel)]="createModel.phone">
+      </label>
+
+      <label>
         Mot de passe
         <div class="password-input-wrap">
           <input [type]="showPassword ? 'text' : 'password'" name="createPassword" [(ngModel)]="createModel.password" required>

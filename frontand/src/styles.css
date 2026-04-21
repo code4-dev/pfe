@@ -1,1 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --app-bg: #f3f6fb;
+  --surface: #ffffff;
+  --text-main: #12263a;
+  --text-muted: #5f7082;
+  --border-soft: #dce5ee;
+  --brand: #0b6aa2;
+  --brand-dark: #084b73;
+  --radius-lg: 16px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: radial-gradient(circle at top left, #ecf6ff 0%, var(--app-bg) 45%, #eef2f8 100%);
+  color: var(--text-main);
+  font-family: 'Trebuchet MS', 'Segoe UI', Tahoma, sans-serif;
+  line-height: 1.4;
+}

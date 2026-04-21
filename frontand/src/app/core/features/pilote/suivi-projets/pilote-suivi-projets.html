@@ -1,0 +1,90 @@
+<section class="pilote-page">
+  <div class="hero-card">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+      <div>
+        <h2 class="h4 mb-1">Suivi des projets</h2>
+        <p class="text-muted mb-0">Vue pilote qualite des projets actifs et de leurs echeances.</p>
+      </div>
+      <a routerLink="/notifications" class="btn btn-primary">Voir notifications</a>
+    </div>
+
+    <div class="stats-grid mt-3">
+      <article class="stat-card">
+        <span>Total</span>
+        <strong>{{ totalProjects }}</strong>
+      </article>
+      <article class="stat-card active">
+        <span>En cours</span>
+        <strong>{{ activeProjects }}</strong>
+      </article>
+      <article class="stat-card done">
+        <span>Termines</span>
+        <strong>{{ completedProjects }}</strong>
+      </article>
+      <article class="stat-card overdue">
+        <span>En retard</span>
+        <strong>{{ overdueProjects }}</strong>
+      </article>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="filters-row">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Rechercher par projet ou client..."
+          [(ngModel)]="search"
+        />
+
+        <select class="form-select" [(ngModel)]="statusFilter">
+          <option value="all">Tous les statuts</option>
+          <option value="planification">Planification</option>
+          <option value="en-cours">En cours</option>
+          <option value="termine">Termine</option>
+          <option value="suspendu">Suspendu</option>
+        </select>
+      </div>
+
+      <div class="table-responsive mt-3" *ngIf="filteredProjects.length > 0">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Projet</th>
+              <th>Client</th>
+              <th>Statut</th>
+              <th>Echeance</th>
+              <th>Alerte</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let project of filteredProjects">
+              <td>
+                <strong>{{ project.name }}</strong>
+                <small class="text-muted d-block">{{ project.description }}</small>
+              </td>
+              <td>{{ project.clientName || '-' }}</td>
+              <td>
+                <span [class]="statusBadgeClass(project.status)">
+                  {{ statusLabel(project.status) }}
+                </span>
+              </td>
+              <td>{{ project.dueDate | date:'dd/MM/yyyy' }}</td>
+              <td>
+                <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle" *ngIf="isOverdue(project)">
+                  En retard
+                </span>
+                <span class="text-muted" *ngIf="!isOverdue(project)">-</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="empty-state text-muted text-center py-4" *ngIf="filteredProjects.length === 0">
+        Aucun projet trouve pour ce filtre.
+      </div>
+    </div>
+  </div>
+</section>
